@@ -7,7 +7,7 @@ const components = [
   'readings',
   'about',
   'history',
-  'features',
+
   'groups',
   'contact',
   'footer',

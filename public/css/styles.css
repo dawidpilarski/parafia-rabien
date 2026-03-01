@@ -117,6 +117,7 @@ html { scroll-behavior: smooth; }
 
 /* ─── Group card hover icon ─────────────────────── */
 .group-card:hover .gc-icon { background: #152540; color: #c4a04b; }
+.group-card:hover .gc-icon i { color: #c4a04b; }
 .gc-icon { transition: background .3s, color .3s; }
 
 /* ─── Stagger delay helpers ─────────────────────── */
