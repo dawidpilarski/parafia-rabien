@@ -1,0 +1,194 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  OGŁOSZENIA – KONFIGURACJA                                  ║
+  ║                                                              ║
+  ║  Aby WŁĄCZYĆ/WYŁĄCZYĆ ogłoszenie, zmień true/false          ║
+  ║  w obiekcie "news" poniżej.                                 ║
+  ║                                                              ║
+  ║  Aby edytować treść, przewiń do odpowiedniej sekcji HTML.   ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<section id="ogloszenia" class="py-28 bg-white"
+  x-data="{
+    news: {
+      koleda:    true,
+      koncert:   false,
+      intencje:  true,
+    }
+  }"
+>
+  <!-- Show section only if at least one item is enabled -->
+  <template x-if="news.koleda || news.koncert || news.intencje">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <!-- Heading -->
+      <div class="text-center mb-16" data-aos="fade-up">
+        <div class="section-label justify-center">
+          <i class="fas fa-bullhorn text-xs"></i> Aktualności
+        </div>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Ogłoszenia</h2>
+        <div class="divider"></div>
+        <p class="text-gray-500 max-w-md mx-auto">Najważniejsze informacje z życia parafii.</p>
+      </div>
+
+      <div class="space-y-8 max-w-3xl mx-auto">
+
+        <!-- ═══════════════════════════════════════════
+             KOLĘDA
+             ═══════════════════════════════════════════ -->
+        <template x-if="news.koleda">
+          <div class="grad-card rounded-3xl p-8 text-white lift" data-aos="fade-up">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="icon-circle bg-gold/15 border border-gold/25">
+                <i class="fas fa-star text-gold"></i>
+              </div>
+              <div>
+                <div class="text-gold/60 text-[.65rem] tracking-widest uppercase font-medium">Wizyta duszpasterska</div>
+                <div class="font-serif text-2xl font-semibold">Kolęda 2026</div>
+              </div>
+            </div>
+
+            <p class="text-white/60 text-sm mb-6">
+              Serdecznie zapraszamy do przyjęcia wizyty duszpasterskiej. Prosimy o przygotowanie stołu z krzyżem, świecą i wodą święconą.
+            </p>
+
+            <!-- EDYTUJ harmonogram kolędy poniżej -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-white/5 border border-white/8">
+                <span class="text-white/80 text-sm font-medium">Poniedziałek, 5 stycznia</span>
+                <span class="text-gold text-sm">ul. Główna, ul. Polna</span>
+              </div>
+              <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-white/5 border border-white/8">
+                <span class="text-white/80 text-sm font-medium">Wtorek, 6 stycznia</span>
+                <span class="text-gold text-sm">ul. Kościelna, ul. Łódzka</span>
+              </div>
+              <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-white/5 border border-white/8">
+                <span class="text-white/80 text-sm font-medium">Środa, 7 stycznia</span>
+                <span class="text-gold text-sm">ul. Leśna, ul. Ogrodowa</span>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/8">
+              <p class="text-white/45 text-xs leading-relaxed">
+                <i class="fas fa-clock mr-1.5 text-gold/60"></i>
+                Kolęda odbywa się w godzinach 16:00 – 19:00. Prosimy o wyrozumiałość w przypadku ewentualnych opóźnień.
+              </p>
+            </div>
+          </div>
+        </template>
+
+        <!-- ═══════════════════════════════════════════
+             KONCERT
+             ═══════════════════════════════════════════ -->
+        <template x-if="news.koncert">
+          <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-3xl p-8 border border-gold/15 lift" data-aos="fade-up">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="icon-circle bg-gold/10 border border-gold/20">
+                <i class="fas fa-music text-gold text-sm"></i>
+              </div>
+              <div>
+                <div class="text-navy/40 text-[.65rem] tracking-widest uppercase font-medium">Wydarzenie</div>
+                <div class="font-serif text-2xl font-semibold text-navy">Koncert w kościele</div>
+              </div>
+            </div>
+
+            <!-- EDYTUJ szczegóły koncertu poniżej -->
+            <p class="text-gray-600 text-sm mb-6">
+              Serdecznie zapraszamy na koncert kolęd i pastorałek w wykonaniu chóru parafialnego. Wstęp wolny – zapraszamy całe rodziny!
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100">
+                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Data</div>
+                <div class="font-serif text-lg font-bold text-navy">12 stycznia</div>
+              </div>
+              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100">
+                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Godzina</div>
+                <div class="font-serif text-lg font-bold text-navy">18:00</div>
+              </div>
+              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100 col-span-2 sm:col-span-1">
+                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Wstęp</div>
+                <div class="font-serif text-lg font-bold text-gold">Wolny</div>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- ═══════════════════════════════════════════
+             INTENCJE MSZALNE
+             (zawsze ostatni w kolejności)
+             ═══════════════════════════════════════════ -->
+        <template x-if="news.intencje">
+          <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 lift" data-aos="fade-up">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="icon-circle bg-navy/8 border border-navy/12">
+                <i class="fas fa-book-open text-navy text-sm"></i>
+              </div>
+              <div>
+                <div class="text-navy/40 text-[.65rem] tracking-widest uppercase font-medium">Tydzień 2–8 marca 2026</div>
+                <div class="font-serif text-2xl font-semibold text-navy">Intencje Mszalne</div>
+              </div>
+            </div>
+
+            <!-- EDYTUJ intencje mszalne poniżej -->
+            <div class="space-y-1">
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Poniedziałek, 2 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">Za † Jana Kowalskiego w 5. rocznicę śmierci – od rodziny</p>
+              </div>
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Wtorek, 3 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">W intencji zdrowia i Bożego błogosławieństwa dla rodziny Nowaków</p>
+              </div>
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Środa, 4 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">Za † rodziców Marię i Stanisława – od dzieci</p>
+              </div>
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Czwartek, 5 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">Za † Annę Wiśniewską – od sąsiadów</p>
+              </div>
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Piątek, 6 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">W intencji dziękczyno-błagalnej z okazji 25. rocznicy ślubu</p>
+              </div>
+              <div class="py-3.5 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Sobota, 7 marca</span>
+                  <span class="text-xs text-gray-400">18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">Za † Tadeusza Nowaka w 1. rocznicę śmierci – od żony z dziećmi</p>
+              </div>
+              <div class="py-3.5">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-sm font-medium text-navy">Niedziela, 8 marca</span>
+                  <span class="text-xs text-gray-400">8:30 · 11:00 · 18:00</span>
+                </div>
+                <p class="text-gray-500 text-sm">8:30 – Za † Kazimierza Zielińskiego – od wnuków</p>
+                <p class="text-gray-500 text-sm">11:00 – Za parafian</p>
+                <p class="text-gray-500 text-sm">18:00 – W intencji chorych parafii</p>
+              </div>
+            </div>
+          </div>
+        </template>
+
+      </div>
+    </div>
+  </template>
+</section>

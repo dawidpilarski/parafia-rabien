@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:brewiarz.pl)",
+      "Bash(node:*)"
+    ]
+  }
+}

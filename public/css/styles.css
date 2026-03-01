@@ -1,0 +1,131 @@
+/* ─── Base ─────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ─── Hero ─────────────────────────────────────── */
+.hero-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(196,160,75,.18) 0%, transparent 70%),
+    linear-gradient(160deg, #0c1a2e 0%, #152540 45%, #0e1e35 100%);
+}
+
+/* Subtle dot-grid overlay */
+.dot-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(196,160,75,.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+/* ─── Gold shimmer text ─────────────────────────── */
+.gold-text {
+  background: linear-gradient(90deg, #c4a04b 0%, #e8d5a3 40%, #c4a04b 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
+}
+
+/* ─── Nav ──────────────────────────────────────── */
+.nav-scrolled {
+  background: rgba(12, 26, 46, .96) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 24px rgba(0,0,0,.35);
+}
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 2px;
+  background: #c4a04b;
+  transition: width .3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ─── Card hover lift ───────────────────────────── */
+.lift {
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 48px rgba(0,0,0,.12);
+}
+
+/* ─── Section divider ──────────────────────────── */
+.divider {
+  width: 56px; height: 3px;
+  background: linear-gradient(90deg, #c4a04b, #e0c47a);
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+}
+
+/* ─── Timeline vertical line ───────────────────── */
+.tl-line {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(196,160,75,.4) 20%, rgba(196,160,75,.4) 80%, transparent);
+  transform: translateX(-50%);
+}
+
+/* ─── Floating animation ───────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+.float { animation: float 4s ease-in-out infinite; }
+
+/* ─── Scroll caret bounce ───────────────────────── */
+@keyframes bounce-y {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+.bounce { animation: bounce-y 2s ease-in-out infinite; }
+
+/* ─── Pill badge ────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: #c4a04b;
+}
+.badge-line { width: 2rem; height: 1px; background: #c4a04b; opacity: .6; }
+
+/* ─── Section label ─────────────────────────────── */
+.section-label {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: #c4a04b; margin-bottom: 1rem;
+}
+
+/* ─── Icon circle ───────────────────────────────── */
+.icon-circle {
+  width: 3rem; height: 3rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Gradient card ─────────────────────────────── */
+.grad-card {
+  background: linear-gradient(135deg, #152540 0%, #1e3255 100%);
+}
+
+/* ─── Group card hover icon ─────────────────────── */
+.group-card:hover .gc-icon { background: #152540; color: #c4a04b; }
+.gc-icon { transition: background .3s, color .3s; }
+
+/* ─── Stagger delay helpers ─────────────────────── */
+[data-aos-delay="50"]  { transition-delay: 50ms  !important; }
+[data-aos-delay="100"] { transition-delay: 100ms !important; }
+[data-aos-delay="150"] { transition-delay: 150ms !important; }
+[data-aos-delay="200"] { transition-delay: 200ms !important; }
+[data-aos-delay="250"] { transition-delay: 250ms !important; }
+[data-aos-delay="300"] { transition-delay: 300ms !important; }
+[data-aos-delay="350"] { transition-delay: 350ms !important; }
+[data-aos-delay="400"] { transition-delay: 400ms !important; }
+[data-aos-delay="500"] { transition-delay: 500ms !important; }
