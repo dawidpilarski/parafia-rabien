@@ -1,0 +1,104 @@
+<section id="czytania" class="py-20 md:py-28 bg-sand">
+  <div class="max-w-4xl mx-auto px-5 md:px-8"
+       x-data="{
+         loading: true,
+         error: false,
+         data: null,
+         open: null,
+         init() {
+           fetch('/api/czytania')
+             .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+             .then(d => { this.data = d; this.loading = false; })
+             .catch(() => { this.error = true; this.loading = false; });
+         },
+         toggle(type) { this.open = this.open === type ? null : type; }
+       }">
+
+    <!-- Section heading -->
+    <div class="text-center mb-14" data-aos="fade-up">
+      <span class="inline-block text-gold font-semibold text-sm tracking-widest uppercase mb-3">Liturgia Słowa</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-navy">Czytania na dziś</h2>
+      <div class="w-16 h-0.5 bg-gold/40 mx-auto mt-4"></div>
+    </div>
+
+    <!-- Loading -->
+    <template x-if="loading">
+      <div class="flex justify-center py-12">
+        <i class="fas fa-spinner fa-spin text-3xl text-gold"></i>
+      </div>
+    </template>
+
+    <!-- Error -->
+    <template x-if="error">
+      <div class="text-center py-12 text-gray-500">
+        <i class="fas fa-exclamation-circle text-2xl mb-3 text-gold/60"></i>
+        <p>Nie udało się pobrać czytań. Spróbuj później lub odwiedź
+          <a href="https://brewiarz.pl/dzis.php?link=c" target="_blank" rel="noopener"
+             class="text-gold hover:text-gold2 underline">brewiarz.pl</a>.</p>
+      </div>
+    </template>
+
+    <!-- Readings -->
+    <template x-if="data">
+      <div>
+        <!-- Date & title -->
+        <div class="text-center mb-8" data-aos="fade-up">
+          <p class="text-sm text-gray-500 uppercase tracking-wider" x-text="data.date"></p>
+          <p class="font-serif text-lg text-navy font-semibold mt-1" x-text="data.title"></p>
+        </div>
+
+        <!-- Reading cards -->
+        <div class="space-y-4">
+          <template x-for="reading in data.readings" :key="reading.type">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300"
+                 data-aos="fade-up">
+
+              <!-- Clickable header -->
+              <button class="w-full flex items-center justify-between px-6 py-5 text-left group"
+                      @click="toggle(reading.type)">
+                <div>
+                  <span class="text-xs font-semibold tracking-wider uppercase text-gold" x-text="reading.label"></span>
+                  <p class="text-navy font-serif font-semibold mt-0.5" x-text="reading.reference"></p>
+                  <p class="text-sm text-gray-500 mt-0.5" x-text="reading.subtitle" x-show="reading.subtitle"></p>
+                </div>
+                <i class="fas fa-chevron-down text-gold/60 transition-transform duration-300"
+                   :class="open === reading.type && 'rotate-180'"></i>
+              </button>
+
+              <!-- Expandable body -->
+              <div x-show="open === reading.type"
+                   x-transition:enter="transition ease-out duration-200"
+                   x-transition:enter-start="opacity-0"
+                   x-transition:enter-end="opacity-100"
+                   x-transition:leave="transition ease-in duration-150"
+                   x-transition:leave-start="opacity-100"
+                   x-transition:leave-end="opacity-0"
+                   class="px-6 pb-6 border-t border-gray-100">
+
+                <!-- Source -->
+                <p class="text-sm font-semibold text-navy/80 mt-4 mb-3 italic" x-text="reading.source" x-show="reading.source"></p>
+
+                <!-- Refrain (psalm) -->
+                <template x-if="reading.refrain">
+                  <p class="text-gold font-semibold mb-3">
+                    <span class="text-xs uppercase tracking-wider">Refren:</span><br>
+                    <span x-text="reading.refrain"></span>
+                  </p>
+                </template>
+
+                <!-- Text -->
+                <div class="text-gray-700 leading-relaxed whitespace-pre-line text-[0.95rem]" x-text="reading.text"></div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Attribution -->
+        <p class="text-center text-xs text-gray-400 mt-8">
+          Źródło: <a href="https://brewiarz.pl" target="_blank" rel="noopener"
+                     class="text-gold/70 hover:text-gold underline">brewiarz.pl</a>
+        </p>
+      </div>
+    </template>
+  </div>
+</section>

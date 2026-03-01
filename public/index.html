@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parafia Zwiastowania Pańskiego w Rąbieniu</title>
+  <meta name="description" content="Parafia Zwiastowania Pańskiego w Rąbieniu – Msze Święte, historia, grupy parafialne, kontakt. Archidiecezja Łódzka, Dekanat Aleksandrowski." />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- AOS – Animate On Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#152540',
+            navy2: '#1e3255',
+            gold:  '#c4a04b',
+            gold2: '#e0c47a',
+            cream: '#faf8f4',
+            sand:  '#f0ece3',
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans:  ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<!-- Alpine root -->
+<body
+  class="bg-cream font-sans text-gray-800 antialiased"
+  x-data="{ menuOpen: false, scrolled: false }"
+  @scroll.window="scrolled = (window.scrollY > 40)"
+>
+
+  <div id="component-header"></div>
+  <div id="component-hero"></div>
+  <div id="component-announcements"></div>
+  <div id="component-readings"></div>
+  <div id="component-mass-schedule"></div>
+  <div id="component-about"></div>
+  <div id="component-history"></div>
+  <div id="component-features"></div>
+  <div id="component-groups"></div>
+  <div id="component-contact"></div>
+  <div id="component-footer"></div>
+
+  <!-- Component loader & initialization -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
