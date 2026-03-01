@@ -1,0 +1,39 @@
+{
+  "koleda": {
+    "enabled": false,
+    "rok": "2026",
+    "opis": "Serdecznie zapraszamy do przyjęcia wizyty duszpasterskiej. Prosimy o przygotowanie stołu z krzyżem, świecą i wodą święconą.",
+    "godziny": "16:00 – 19:00",
+    "harmonogram": [
+      { "dzien": "Poniedziałek, 5 stycznia", "ulice": "ul. Główna, ul. Polna" },
+      { "dzien": "Wtorek, 6 stycznia",       "ulice": "ul. Kościelna, ul. Łódzka" },
+      { "dzien": "Środa, 7 stycznia",        "ulice": "ul. Leśna, ul. Ogrodowa" }
+    ]
+  },
+  "koncert": {
+    "enabled": false,
+    "tytul": "Koncert w kościele",
+    "opis": "Serdecznie zapraszamy na koncert kolęd i pastorałek w wykonaniu chóru parafialnego. Wstęp wolny – zapraszamy całe rodziny!",
+    "data": "12 stycznia",
+    "godzina": "18:00",
+    "wstep": "Wolny",
+    "zdjecie": "/images/koncert.jpg"
+  },
+  "intencje": {
+    "enabled": true,
+    "tydzien": "2–8 marca 2026",
+    "wpisy": [
+      { "dzien": "Poniedziałek, 2 marca", "msze": [{ "godzina": "18:00", "intencja": "Za † Jana Kowalskiego w 5. rocznicę śmierci – od rodziny" }] },
+      { "dzien": "Wtorek, 3 marca",       "msze": [{ "godzina": "18:00", "intencja": "W intencji zdrowia i Bożego błogosławieństwa dla rodziny Nowaków" }] },
+      { "dzien": "Środa, 4 marca",        "msze": [{ "godzina": "18:00", "intencja": "Za † rodziców Marię i Stanisława – od dzieci" }] },
+      { "dzien": "Czwartek, 5 marca",     "msze": [{ "godzina": "18:00", "intencja": "Za † Annę Wiśniewską – od sąsiadów" }] },
+      { "dzien": "Piątek, 6 marca",       "msze": [{ "godzina": "18:00", "intencja": "W intencji dziękczyno-błagalnej z okazji 25. rocznicy ślubu" }] },
+      { "dzien": "Sobota, 7 marca",       "msze": [{ "godzina": "18:00", "intencja": "Za † Tadeusza Nowaka w 1. rocznicę śmierci – od żony z dziećmi" }] },
+      { "dzien": "Niedziela, 8 marca",    "msze": [
+        { "godzina": "8:30",  "intencja": "Za † Kazimierza Zielińskiego – od wnuków" },
+        { "godzina": "11:00", "intencja": "Za parafian" },
+        { "godzina": "18:00", "intencja": "W intencji chorych parafii" }
+      ]}
+    ]
+  }
+}
