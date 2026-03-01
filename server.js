@@ -121,11 +121,25 @@ async function fetchCzytania() {
 
     if (type === 'psalm') {
       // Psalm verses are in table cells with padding-left:5px
+      // Each <td> is one verse line; stanzas end with <br><br> or empty cells
       const verseRegex = /padding-left:5px[^>]*>([\s\S]*?)<\/td>/g;
       let m;
+      const stanzas = [[]];
       while ((m = verseRegex.exec(section)) !== null) {
-        const text = cleanHtml(m[1]).replace(/\s*\*\s*/g, ' ');
-        if (text && !text.match(/^Refren:/)) bodyParts.push(text);
+        const raw = m[1];
+        const isStanzaEnd = /(<br\s*\/?\s*>){2,}/i.test(raw);
+        const text = cleanHtml(raw).replace(/\s*\*\s*/g, '').trim();
+        if (!text || text.match(/^Refren:/)) {
+          if (isStanzaEnd || !text) {
+            if (stanzas[stanzas.length - 1].length > 0) stanzas.push([]);
+          }
+          continue;
+        }
+        stanzas[stanzas.length - 1].push(text);
+        if (isStanzaEnd && stanzas[stanzas.length - 1].length > 0) stanzas.push([]);
+      }
+      for (const stanza of stanzas) {
+        if (stanza.length > 0) bodyParts.push(stanza.join('\n'));
       }
     } else {
       // Regular readings use <div class=c>
