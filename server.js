@@ -10,8 +10,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Czytania scraper ---
 
-let cache = { data: null, timestamp: 0 };
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+let cache = { data: null, date: null };
 
 async function fetchCzytania() {
   // Step 1: get redirect URL
@@ -169,13 +168,13 @@ app.get('/api/ogloszenia', (_req, res) => {
 
 app.get('/api/czytania', async (req, res) => {
   try {
-    const now = Date.now();
-    if (cache.data && (now - cache.timestamp) < CACHE_TTL) {
+    const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+    if (cache.data && cache.date === today) {
       return res.json(cache.data);
     }
 
     const data = await fetchCzytania();
-    cache = { data, timestamp: now };
+    cache = { data, date: today };
     res.json(data);
   } catch (err) {
     console.error('Scraping error:', err);
