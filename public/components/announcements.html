@@ -12,7 +12,7 @@
 <section id="ogloszenia" class="py-28 bg-white"
   x-data="{
     news: {
-      koleda:    true,
+      koleda:    false,
       koncert:   false,
       intencje:  true,
     }
@@ -83,6 +83,7 @@
              ═══════════════════════════════════════════ -->
         <template x-if="news.koncert">
           <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-3xl p-8 border border-gold/15 lift" :class="!news.koleda && 'lg:col-span-2'" data-aos="fade-up">
+            <img src="/images/koncert.jpg" alt="Koncert w kościele" class="w-full h-48 object-cover rounded-2xl mb-6">
             <div class="flex items-center gap-4 mb-6">
               <div class="icon-circle bg-gold/10 border border-gold/20">
                 <i class="fas fa-music text-gold text-sm"></i>
