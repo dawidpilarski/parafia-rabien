@@ -14,144 +14,87 @@ app.use(express.static(path.join(__dirname, 'public')));
 let cache = { data: null, date: null };
 
 async function fetchCzytania() {
-  // Step 1: get redirect URL
-  const redirectRes = await fetch('https://brewiarz.pl/dzis.php?link=c', { redirect: 'manual' });
-  let location = redirectRes.headers.get('location');
-
-  // If no redirect header, parse meta refresh from body
-  if (!location) {
-    const body = await redirectRes.text();
-    const m = body.match(/URL=([^"]+)/i);
-    if (m) location = m[1];
-  }
-
-  if (!location) throw new Error('Could not resolve brewiarz.pl redirect');
-
-  let currentUrl = location.startsWith('http') ? location : `https://brewiarz.pl${location}`;
-
-  // Step 2: fetch page with ISO-8859-2 decoding
-  async function fetchAndDecode(fetchUrl) {
-    const r = await fetch(fetchUrl);
-    const b = await r.arrayBuffer();
-    return new TextDecoder('iso-8859-2').decode(b);
-  }
-
-  let html = await fetchAndDecode(currentUrl);
-
-  // Handle selection page when multiple reading options exist
-  if (html.includes('WYBIERZ OFICJUM')) {
-    const $sel = cheerio.load(html);
-    const firstLink = $sel('a[href*="index.php3?l="]').first().attr('href');
-    if (!firstLink) throw new Error('No reading option found on selection page');
-    currentUrl = new URL(firstLink, currentUrl).href;
-    html = await fetchAndDecode(currentUrl);
-  }
-
-  // Handle JS redirect (var s = "czyt.php3"; location.href=...)
-  const jsRedirect = html.match(/var s = "([^"]+)";\s*location\.href/);
-  if (jsRedirect) {
-    currentUrl = new URL(jsRedirect[1], currentUrl).href;
-    html = await fetchAndDecode(currentUrl);
-  }
-
-  // Step 3: parse DOM
+  const res = await fetch('https://opoka.org.pl/liturgia/');
+  const html = await res.text();
   const $ = cheerio.load(html);
 
-  // Step 4: extract date and liturgical title
-  // <title>.:ILG:. - 1 marca 2026: CZYTANIA LITURGICZNE</title>
-  const titleTag = $('title').text();
-  const date = titleTag.split(' - ')[1]?.split(':')[0]?.trim() ?? '';
-  // feast name is in the bold 12pt div
-  const title = $('[style*="font-size: 12pt"][style*="font-weight:bold"]').first().text().trim();
+  // Extract date: "2 marca"
+  const dayNum = $('.data-wrapper .data').text().trim();
+  const month = $('.data-wrapper .miesiac').text().trim();
+  const date = `${dayNum} ${month}`;
 
-  // Step 5: extract readings
+  // Liturgical period as title
+  const title = $('.period_name').text().trim();
+
+  // Reading number labels
+  const ordinals = ['PIERWSZE', 'DRUGIE', 'TRZECIE', 'CZWARTE', 'PIĄTE', 'SZÓSTE', 'SIÓDME'];
+
   const readings = [];
+  let czytCount = 0;
 
-  const labelMap = {
-    czytanie1: 'PIERWSZE CZYTANIE',
-    psalm:     'PSALM RESPONSORYJNY',
-    czytanie2: 'DRUGIE CZYTANIE',
-    ewangelia: 'EWANGELIA',
-  };
+  $('.sekcja.dwa .subsec').each((_, el) => {
+    const cls = $(el).attr('class') || '';
 
-  function extractReading(anchorName, divId, type) {
-    if ($(`a[name="${anchorName}"]`).length === 0) return null;
+    // Skip werset (verse before gospel)
+    if (cls.includes('werset')) return;
 
-    const section = $(`#${divId}`);
-    if (!section.length) return null;
+    const isPsalm = cls.includes('psalm');
+    const isEwangelia = cls.includes('ewangelia');
+    const isCzyt = /\bczyt\d+\b/.test(cls);
 
-    const label = labelMap[type] || type;
+    if (!isPsalm && !isEwangelia && !isCzyt) return;
 
-    // Subtitle: small text below the reading title (only for czytania, not psalm/ewangelia)
-    const subtitle = (type === 'czytanie1' || type === 'czytanie2')
-      ? section.find('[style*="font-size:8pt"]').first().text().trim()
-      : '';
+    const reference = $(el).find('.siglum').text().trim();
 
-    // Reference: bold text in the right-hand header cell
-    const reference = section.find('tr').first().find('td').last().find('b').first().text().trim();
+    // Get the content div (the div that is not h2 and not .siglum)
+    const contentDiv = $(el).find('div').not('.siglum').not('h2').last();
+    const rawHtml = contentDiv.html() || '';
 
-    // Source: first <b> in .ww whose text contains a book reference phrase
-    let source = '';
-    section.find('.ww b').each((_, el) => {
-      if (source) return;
-      const text = $(el).text().trim();
-      if (/Czytanie z|Słowa Ewangelii|Początek|Zakończenie/i.test(text)) {
-        source = text.replace(/^[✠\s]+/, '').trim();
-      }
-    });
+    // Split on double <br> to get paragraphs
+    const paragraphs = rawHtml
+      .split(/<\/br><\/br>|<br\s*\/?><br\s*\/?>|<\/br>\s*<\/br>/gi)
+      .map(p => p.replace(/<[^>]+>/g, '').trim())
+      .filter(Boolean);
 
-    let refrain = '';
-    const bodyParts = [];
-
-    if (type === 'psalm') {
-      // Refrain: text of the <b> element that contains "Refren:"
-      const refrainFont = section.find('font[color="red"]').filter((_, el) =>
-        $(el).text().trim() === 'Refren:'
-      ).first();
-      refrain = refrainFont.parent().text().replace(/^Refren:\s*/i, '').trim();
-
-      // Verses: each <td style="...padding-left:5px..."> is one verse line.
-      // the other type of td is verse number in Bible
-      // Stanzas are separated by a <br><br> at the end of the last line.
-      const stanzas = [[]];
-      section.find('td[style*="padding-left:5px"]').each((_, el) => {
-        const raw = $(el).html() || '';
-        const isStanzaEnd = (raw.match(/<br/gi) || []).length >= 2;
-        const text = $(el).text().replace(/\*/g, '').trim();
-        if (!text || /^Refren:/i.test(text)) {
-          if (stanzas[stanzas.length - 1].length > 0) stanzas.push([]);
-          return;
-        }
-        stanzas[stanzas.length - 1].push(text);
-        if (isStanzaEnd) stanzas.push([]);
+    if (isPsalm) {
+      const refrain = paragraphs[0] || '';
+      // Filter out refrain repetitions from body, keep stanzas
+      const stanzas = paragraphs.slice(1).filter(p => p !== refrain);
+      readings.push({
+        type: 'psalm',
+        label: 'PSALM RESPONSORYJNY',
+        subtitle: '',
+        reference,
+        source: '',
+        text: stanzas.join('\n\n'),
+        refrain,
       });
-      for (const stanza of stanzas) {
-        if (stanza.length > 0) bodyParts.push(stanza.join('\n'));
-      }
+    } else if (isEwangelia) {
+      const source = paragraphs[0] || '';
+      const text = paragraphs.slice(1).join('\n\n');
+      readings.push({
+        type: 'ewangelia',
+        label: 'EWANGELIA',
+        subtitle: '',
+        reference,
+        source,
+        text,
+      });
     } else {
-      // Body paragraphs are in <div class="c"> elements
-      section.find('div.c').each((_, el) => {
-        const text = $(el).text().trim();
-        if (text) bodyParts.push(text);
+      // czytanie
+      czytCount++;
+      const source = paragraphs[0] || '';
+      const text = paragraphs.slice(1).join('\n\n');
+      readings.push({
+        type: `czytanie${czytCount}`,
+        label: `${ordinals[czytCount - 1] || czytCount + '.'} CZYTANIE`,
+        subtitle: '',
+        reference,
+        source,
+        text,
       });
     }
-
-    const reading = { type, label, subtitle, reference, source, text: bodyParts.join('\n\n') };
-    if (refrain) reading.refrain = refrain;
-    return reading;
-  }
-
-  const r1 = extractReading('czyt1',     'defzz1',  'czytanie1');
-  if (r1) readings.push(r1);
-
-  const ps = extractReading('psalmresp', 'def3',    'psalm');
-  if (ps) readings.push(ps);
-
-  const r2 = extractReading('czyt2',     'defzx1',  'czytanie2');
-  if (r2) readings.push(r2);
-
-  const ew = extractReading('ewang',     'defzww1', 'ewangelia');
-  if (ew) readings.push(ew);
+  });
 
   return { date, title, readings };
 }
