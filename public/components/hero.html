@@ -1,78 +1,137 @@
-<section class="hero-bg dot-grid relative min-h-screen flex items-center overflow-hidden">
+<section class="hero-section relative min-h-screen flex items-center overflow-hidden">
 
-  <!-- Decorative glowing orbs -->
-  <div class="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-gold/5 blur-3xl pointer-events-none"></div>
-  <div class="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full bg-blue-500/5 blur-3xl pointer-events-none"></div>
+  <!-- Animated marble texture background -->
+  <div class="hero-marble"></div>
 
-  <!-- Floating cross -->
-  <div class="absolute top-24 right-12 opacity-8 float hidden lg:block" style="animation-delay: .5s;">
-    <svg width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="33" y="0" width="14" height="120" rx="7" fill="#c4a04b" opacity=".15"/>
-      <rect x="0" y="34" width="80" height="14" rx="7" fill="#c4a04b" opacity=".15"/>
+  <!-- Floating golden particles -->
+  <div class="particles-field">
+    <span class="particle" style="--x:8%;--y:20%;--d:0s;--s:3px"></span>
+    <span class="particle" style="--x:15%;--y:65%;--d:1.2s;--s:2px"></span>
+    <span class="particle" style="--x:25%;--y:35%;--d:2.5s;--s:4px"></span>
+    <span class="particle" style="--x:35%;--y:80%;--d:0.7s;--s:2px"></span>
+    <span class="particle" style="--x:45%;--y:15%;--d:3.1s;--s:3px"></span>
+    <span class="particle" style="--x:55%;--y:70%;--d:1.8s;--s:2px"></span>
+    <span class="particle" style="--x:65%;--y:25%;--d:0.3s;--s:3px"></span>
+    <span class="particle" style="--x:72%;--y:55%;--d:2.9s;--s:4px"></span>
+    <span class="particle" style="--x:82%;--y:40%;--d:1.5s;--s:2px"></span>
+    <span class="particle" style="--x:88%;--y:75%;--d:3.6s;--s:3px"></span>
+    <span class="particle" style="--x:92%;--y:18%;--d:0.9s;--s:2px"></span>
+    <span class="particle" style="--x:50%;--y:50%;--d:2.1s;--s:5px"></span>
+  </div>
+
+  <!-- Large ornamental halo ring -->
+  <div class="hero-halo"></div>
+
+  <!-- Decorative rosary arc — bottom left -->
+  <div class="absolute bottom-16 left-4 lg:left-12 opacity-[.08] hidden md:block">
+    <svg width="120" height="200" viewBox="0 0 120 200" fill="none">
+      <!-- Arc of beads -->
+      <circle cx="15" cy="180" r="4" fill="#c4a04b"/><circle cx="22" cy="158" r="4" fill="#c4a04b"/>
+      <circle cx="32" cy="138" r="4" fill="#c4a04b"/><circle cx="45" cy="120" r="4" fill="#c4a04b"/>
+      <circle cx="60" cy="108" r="4" fill="#c4a04b"/><circle cx="78" cy="100" r="5" fill="#c4a04b"/>
+      <circle cx="95" cy="98" r="4" fill="#c4a04b"/><circle cx="110" cy="100" r="4" fill="#c4a04b"/>
+      <!-- Cross at end -->
+      <line x1="15" y1="188" x2="15" y2="200" stroke="#c4a04b" stroke-width="1.5"/>
+      <line x1="10" y1="192" x2="20" y2="192" stroke="#c4a04b" stroke-width="1.5"/>
+      <!-- Connecting thread -->
+      <path d="M15 184 Q15 160 22 158 Q30 140 32 138 Q42 122 45 120 Q55 110 60 108 Q72 102 78 100 Q88 98 95 98 Q105 98 110 100" stroke="#c4a04b" stroke-width=".8" fill="none" opacity=".5"/>
     </svg>
   </div>
-  <div class="absolute bottom-32 left-12 opacity-8 float hidden lg:block">
-    <svg width="50" height="75" viewBox="0 0 50 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="21" y="0" width="8" height="75" rx="4" fill="#c4a04b" opacity=".15"/>
-      <rect x="0" y="20" width="50" height="8" rx="4" fill="#c4a04b" opacity=".15"/>
+
+  <!-- Decorative gothic arch — top right -->
+  <div class="absolute top-20 right-4 lg:right-12 opacity-[.07] hidden md:block">
+    <svg width="100" height="180" viewBox="0 0 100 180" fill="none">
+      <!-- Gothic pointed arch -->
+      <path d="M10 180 V60 Q10 10 50 5 Q90 10 90 60 V180" stroke="#c4a04b" stroke-width="1.5" fill="none"/>
+      <path d="M25 180 V70 Q25 25 50 18 Q75 25 75 70 V180" stroke="#c4a04b" stroke-width="1" fill="none" opacity=".5"/>
+      <!-- Star at apex -->
+      <polygon points="50,8 52,14 58,14 53,18 55,24 50,20 45,24 47,18 42,14 48,14" fill="#c4a04b" opacity=".6"/>
+      <!-- Decorative circles along arch -->
+      <circle cx="50" cy="40" r="8" stroke="#c4a04b" stroke-width=".8" fill="none" opacity=".4"/>
+      <circle cx="50" cy="40" r="4" stroke="#c4a04b" stroke-width=".8" fill="none" opacity=".3"/>
+      <!-- Vertical line ornament -->
+      <line x1="50" y1="50" x2="50" y2="140" stroke="#c4a04b" stroke-width=".5" opacity=".3"/>
+      <circle cx="50" cy="80" r="2" fill="#c4a04b" opacity=".3"/>
+      <circle cx="50" cy="110" r="2" fill="#c4a04b" opacity=".3"/>
     </svg>
   </div>
 
-  <div class="relative z-10 max-w-6xl mx-auto px-6 py-40 text-center w-full">
+  <!-- Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-6 py-36 text-center w-full">
 
     <!-- Badge -->
-    <div class="badge mb-8" data-aos="fade-down" data-aos-delay="100">
-      <span class="badge-line"></span>
+    <div class="hero-badge mb-10" data-aos="fade-down" data-aos-delay="100">
+      <span class="hero-badge-dot"></span>
       Archidiecezja Łódzka · Dekanat Aleksandrowski
-      <span class="badge-line"></span>
+      <span class="hero-badge-dot"></span>
+    </div>
+
+    <!-- Marian monogram -->
+    <div class="mb-8" data-aos="zoom-in" data-aos-delay="180">
+      <div class="hero-monogram">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+          <path d="M10 50V22l22 16 22-16v28" stroke="url(#monoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="32,6 34,11.5 39.8,11.5 35,15 36.8,20.5 32,17 27.2,20.5 29,15 24.2,11.5 30,11.5" fill="url(#monoGrad)"/>
+          <defs><linearGradient id="monoGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#e0c47a"/><stop offset="1" stop-color="#c4a04b"/></linearGradient></defs>
+        </svg>
+      </div>
     </div>
 
     <!-- Heading -->
-    <h1 class="font-serif text-white font-bold leading-[1.1] mb-6" data-aos="fade-up" data-aos-delay="200">
-      <span class="block text-5xl md:text-6xl lg:text-7xl mb-2">Parafia</span>
-      <span class="block text-4xl md:text-5xl lg:text-6xl gold-text">Zwiastowania Pańskiego</span>
+    <h1 class="font-serif font-bold leading-[1.05] mb-5" data-aos="fade-up" data-aos-delay="250">
+      <span class="block text-5xl md:text-6xl lg:text-8xl mb-3 hero-title-main">Parafia</span>
+      <span class="block text-4xl md:text-5xl lg:text-7xl hero-title-gold pb-2">Zwiastowania Pańskiego</span>
     </h1>
 
-    <p class="font-serif italic text-white/50 text-xl md:text-2xl mb-4" data-aos="fade-up" data-aos-delay="280">
+    <p class="font-serif italic text-lg md:text-2xl mb-6 hero-subtitle" data-aos="fade-up" data-aos-delay="330">
       w Rąbieniu
     </p>
 
-    <p class="text-white/40 text-base md:text-lg max-w-lg mx-auto mb-2 italic" data-aos="fade-up" data-aos-delay="350">
+    <!-- Ornamental divider -->
+    <div class="hero-ornament mb-8" data-aos="fade-up" data-aos-delay="380">
+      <span class="hero-orn-line"></span>
+      <svg width="20" height="20" viewBox="0 0 20 20"><polygon points="10,0 12.5,7.5 20,7.5 14,12.5 16,20 10,15 4,20 6,12.5 0,7.5 7.5,7.5" fill="#c4a04b" opacity=".6"/></svg>
+      <span class="hero-orn-line"></span>
+    </div>
+
+    <blockquote class="hero-quote mb-2" data-aos="fade-up" data-aos-delay="420">
       „Oto Ja służebnica Pańska, <br/>niech Mi się stanie według twego słowa!"
-    </p>
-    <p class="text-white/30 text-sm mb-12" data-aos="fade-up" data-aos-delay="370">
-      — Łk 1,28
+    </blockquote>
+    <p class="hero-cite mb-14" data-aos="fade-up" data-aos-delay="450">
+      — Łk 1,38
     </p>
 
     <!-- CTA buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-20" data-aos="fade-up" data-aos-delay="430">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-20" data-aos="fade-up" data-aos-delay="500">
       <a href="#ogloszenia"
-         class="group inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold2 text-white px-8 py-4 rounded-full font-medium text-lg transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-gold/30">
-        <i class="fas fa-bullhorn text-sm"></i>
-        Ogłoszenia
+         class="hero-btn-primary group">
+        <span class="hero-btn-shine"></span>
+        <i class="fas fa-bullhorn text-sm relative z-10"></i>
+        <span class="relative z-10">Ogłoszenia</span>
       </a>
       <a href="#czytania"
-         class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-gold text-white/80 hover:text-white px-8 py-4 rounded-full font-medium text-lg transition-all hover:bg-white/5">
+         class="hero-btn-ghost">
         <i class="fas fa-book-open text-sm"></i>
         Czytania na dziś
       </a>
     </div>
 
-    <!-- Stats strip -->
-    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="520">
-      <div class="text-center py-5 px-3 rounded-2xl bg-white/5 border border-white/8 backdrop-blur">
-        <div class="font-serif text-lg font-bold gold-text"><i class="fas fa-map-marker-alt text-base mr-1"></i> Rąbień</div>
-        <div class="text-white/40 text-xs mt-1 uppercase tracking-wider">ul. Księdza Kanonika Andrzeja Mikołajczyka 2</div>
+    <!-- Info cards -->
+    <div class="grid grid-cols-2 gap-5 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="580">
+      <div class="hero-info-card">
+        <div class="font-serif text-lg font-bold hero-title-gold"><i class="fas fa-map-marker-alt text-base mr-1"></i> Rąbień</div>
+        <div class="hero-info-sub">ul. Ks. Kan. A. Mikołajczyka 2</div>
       </div>
-      <div class="text-center py-5 px-3 rounded-2xl bg-white/5 border border-white/8 backdrop-blur">
-        <div class="font-serif text-3xl font-bold gold-text">18:00</div>
-        <div class="text-white/40 text-xs mt-1 uppercase tracking-wider">Msza codzienna</div>
+      <div class="hero-info-card">
+        <div class="font-serif text-3xl font-bold hero-title-gold">18:00</div>
+        <div class="hero-info-sub">Msza codzienna</div>
       </div>
     </div>
   </div>
 
-  <!-- Scroll caret -->
-  <a href="#ogloszenia" class="bounce absolute bottom-10 left-1/2 text-gold/50 hover:text-gold transition-colors">
-    <i class="fas fa-chevron-down text-2xl"></i>
+  <!-- Scroll indicator -->
+  <a href="#ogloszenia" class="hero-scroll-cue">
+    <span class="hero-scroll-line"></span>
+    <i class="fas fa-chevron-down text-sm"></i>
   </a>
 </section>
