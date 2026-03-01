@@ -4,20 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-Static website for a Polish Catholic parish (Parafia Zwiastowania Pańskiego w Rąbieniu). No build step, no npm — pure HTML/CSS/JS served as static files.
+Website for a Polish Catholic parish (Parafia Zwiastowania Pańskiego w Rąbieniu). Node.js/Express backend serving static files from `public/` with a scraping API for daily liturgical readings.
 
 ## Running Locally
 
 ```bash
-python -m http.server 8080 --directory .
+npm install
+npm start        # starts Express on port 3000
 ```
 
 ## Architecture
 
-**Component-based loading without a framework.** `index.html` is a shell with placeholder `<div id="component-{name}">` elements. `js/main.js` fetches each HTML file from `components/` and injects it, then initializes AOS (scroll animations).
+**Backend:** `server.js` — Express server serving `public/` as static files. Exposes `GET /api/czytania` which scrapes brewiarz.pl for daily readings (ISO-8859-2 encoded, cached 1 hour).
+
+**Frontend:** Component-based loading without a framework. `public/index.html` is a shell with placeholder `<div id="component-{name}">` elements. `public/js/main.js` fetches each HTML file from `components/` and injects it, then initializes AOS (scroll animations).
 
 Component load order matters — it matches page section order:
-header → hero → mass-schedule → announcements → about → history → features → groups → contact → footer
+header → hero → announcements → readings → mass-schedule → about → history → features → groups → contact → footer
 
 **Key frameworks (all via CDN):**
 - **Tailwind CSS 3** — utility classes, custom theme defined inline in `index.html`
@@ -39,7 +42,7 @@ Custom animations and component styles live in `css/styles.css`. Sections altern
 
 ## Announcements System
 
-`components/announcements.html` has an Alpine.js `x-data` config block at the top:
+`public/components/announcements.html` has an Alpine.js `x-data` config block at the top:
 
 ```js
 news: {
@@ -54,7 +57,7 @@ Each news item is wrapped in `<template x-if="news.xxx">`. The entire section au
 ## Conventions
 
 - All content is in Polish
-- Section IDs are Polish: `#msze`, `#ogloszenia`, `#o-parafii`, `#historia`, `#grupy`, `#kontakt`
+- Section IDs are Polish: `#msze`, `#ogloszenia`, `#czytania`, `#o-parafii`, `#historia`, `#grupy`, `#kontakt`
 - Nav links in `header.html` must be updated in both desktop and mobile menu blocks
 - AOS attributes: use `data-aos="fade-up"` (or fade-left/right) with staggered `data-aos-delay`
 - Card patterns: dark cards = `grad-card` class, light cards = `bg-white` with `shadow-xl border border-gray-100`
