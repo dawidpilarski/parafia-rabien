@@ -27,22 +27,31 @@ async function fetchCzytania() {
 
   if (!location) throw new Error('Could not resolve brewiarz.pl redirect');
 
-  const url = location.startsWith('http') ? location : `https://brewiarz.pl${location}`;
+  let currentUrl = location.startsWith('http') ? location : `https://brewiarz.pl${location}`;
 
   // Step 2: fetch page with ISO-8859-2 decoding
-  const res = await fetch(url);
-  const buf = await res.arrayBuffer();
-  let html = new TextDecoder('iso-8859-2').decode(buf);
+  async function fetchAndDecode(fetchUrl) {
+    const r = await fetch(fetchUrl);
+    const b = await r.arrayBuffer();
+    return new TextDecoder('iso-8859-2').decode(b);
+  }
+
+  let html = await fetchAndDecode(currentUrl);
 
   // Handle selection page when multiple reading options exist
   if (html.includes('WYBIERZ OFICJUM')) {
     const $sel = cheerio.load(html);
     const firstLink = $sel('a[href*="index.php3?l="]').first().attr('href');
     if (!firstLink) throw new Error('No reading option found on selection page');
-    const optionUrl = new URL(firstLink, url).href;
-    const res2 = await fetch(optionUrl);
-    const buf2 = await res2.arrayBuffer();
-    html = new TextDecoder('iso-8859-2').decode(buf2);
+    currentUrl = new URL(firstLink, currentUrl).href;
+    html = await fetchAndDecode(currentUrl);
+  }
+
+  // Handle JS redirect (var s = "czyt.php3"; location.href=...)
+  const jsRedirect = html.match(/var s = "([^"]+)";\s*location\.href/);
+  if (jsRedirect) {
+    currentUrl = new URL(jsRedirect[1], currentUrl).href;
+    html = await fetchAndDecode(currentUrl);
   }
 
   // Step 3: parse DOM
