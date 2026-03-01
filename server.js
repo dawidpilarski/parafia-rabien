@@ -32,7 +32,18 @@ async function fetchCzytania() {
   // Step 2: fetch page with ISO-8859-2 decoding
   const res = await fetch(url);
   const buf = await res.arrayBuffer();
-  const html = new TextDecoder('iso-8859-2').decode(buf);
+  let html = new TextDecoder('iso-8859-2').decode(buf);
+
+  // Handle selection page when multiple reading options exist
+  if (html.includes('WYBIERZ OFICJUM')) {
+    const $sel = cheerio.load(html);
+    const firstLink = $sel('a[href*="index.php3?l="]').first().attr('href');
+    if (!firstLink) throw new Error('No reading option found on selection page');
+    const optionUrl = new URL(firstLink, url).href;
+    const res2 = await fetch(optionUrl);
+    const buf2 = await res2.arrayBuffer();
+    html = new TextDecoder('iso-8859-2').decode(buf2);
+  }
 
   // Step 3: parse DOM
   const $ = cheerio.load(html);
