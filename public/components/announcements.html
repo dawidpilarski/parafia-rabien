@@ -32,13 +32,13 @@
         <p class="text-gray-500 max-w-md mx-auto">Najważniejsze informacje z życia parafii.</p>
       </div>
 
-      <div class="space-y-8 max-w-3xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
         <!-- ═══════════════════════════════════════════
              KOLĘDA
              ═══════════════════════════════════════════ -->
         <template x-if="news.koleda">
-          <div class="grad-card rounded-3xl p-8 text-white lift" data-aos="fade-up">
+          <div class="grad-card rounded-3xl p-8 text-white lift" :class="!news.koncert && 'lg:col-span-2'" data-aos="fade-up">
             <div class="flex items-center gap-4 mb-6">
               <div class="icon-circle bg-gold/15 border border-gold/25">
                 <i class="fas fa-star text-gold"></i>
@@ -82,7 +82,7 @@
              KONCERT
              ═══════════════════════════════════════════ -->
         <template x-if="news.koncert">
-          <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-3xl p-8 border border-gold/15 lift" data-aos="fade-up">
+          <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-3xl p-8 border border-gold/15 lift" :class="!news.koleda && 'lg:col-span-2'" data-aos="fade-up">
             <div class="flex items-center gap-4 mb-6">
               <div class="icon-circle bg-gold/10 border border-gold/20">
                 <i class="fas fa-music text-gold text-sm"></i>
@@ -120,7 +120,7 @@
              (zawsze ostatni w kolejności)
              ═══════════════════════════════════════════ -->
         <template x-if="news.intencje">
-          <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 lift" data-aos="fade-up">
+          <div class="lg:col-span-2 bg-white rounded-3xl p-8 shadow-xl border border-gray-100 lift" data-aos="fade-up">
             <div class="flex items-center gap-4 mb-6">
               <div class="icon-circle bg-navy/8 border border-navy/12">
                 <i class="fas fa-book-open text-navy text-sm"></i>
