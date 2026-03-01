@@ -5,21 +5,13 @@ body { overflow-x: hidden; }
 /* ─── Hero Section ─────────────────────────────── */
 .hero-section {
   background:
-    radial-gradient(ellipse 70% 55% at 50% 20%, rgba(196,160,75,.10) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(120,100,180,.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 60%, rgba(100,130,200,.06) 0%, transparent 60%),
-    linear-gradient(175deg, #0a1020 0%, #111d35 20%, #152540 45%, #1a2d50 65%, #15203a 85%, #0d1628 100%);
+    radial-gradient(ellipse 70% 55% at 50% 20%, rgba(196,160,75,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(120,100,180,.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 60%, rgba(100,130,200,.08) 0%, transparent 60%),
+    linear-gradient(175deg, rgba(10,16,32,.85) 0%, rgba(17,29,53,.80) 20%, rgba(21,37,64,.75) 45%, rgba(26,45,80,.78) 65%, rgba(21,32,58,.82) 85%, rgba(13,22,40,.88) 100%),
+    url('../images/church-exterior-1.jpg') center 35% / cover no-repeat;
 }
 
-/* ─── Marble texture overlay ───────────────────── */
-.hero-marble {
-  position: absolute; inset: 0; pointer-events: none;
-  opacity: .04;
-  background:
-    url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.015' numOctaves='4' seed='2'/%3E%3CfeColorMatrix values='0 0 0 9 -4 0 0 0 9 -4 0 0 0 9 -4 0 0 0 0 .8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
-  background-size: cover;
-  mix-blend-mode: overlay;
-}
 
 /* ─── Divine glow (radial, top-center) ─────────── */
 .hero-light-burst {
