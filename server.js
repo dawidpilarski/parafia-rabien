@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,9 @@ const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 async function fetchCzytania() {
   // Step 1: get redirect URL
   const redirectRes = await fetch('https://brewiarz.pl/dzis.php?link=c', { redirect: 'manual' });
+  if(!redirectRes.ok){
+    throw new Error(`Failed to fetch from brewiarz.pl. Status: ${redirectRes.status}`)
+  }
   let location = redirectRes.headers.get('location');
 
   // If no redirect header, parse meta refresh from body
@@ -153,6 +157,15 @@ async function fetchCzytania() {
 
   return { date, title, readings };
 }
+
+app.get('/api/ogloszenia', (_req, res) => {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'data', 'ogloszenia.json'), 'utf8');
+    res.json(JSON.parse(raw));
+  } catch (e) {
+    res.status(500).json({ error: 'Nie udało się załadować ogłoszeń.' });
+  }
+});
 
 app.get('/api/czytania', async (req, res) => {
   try {
