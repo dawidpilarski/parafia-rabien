@@ -9,7 +9,7 @@ body { overflow-x: hidden; }
     radial-gradient(ellipse 50% 50% at 20% 80%, rgba(120,100,180,.10) 0%, transparent 60%),
     radial-gradient(ellipse 50% 50% at 80% 60%, rgba(100,130,200,.08) 0%, transparent 60%),
     linear-gradient(175deg, rgba(10,16,32,.85) 0%, rgba(17,29,53,.80) 20%, rgba(21,37,64,.75) 45%, rgba(26,45,80,.78) 65%, rgba(21,32,58,.82) 85%, rgba(13,22,40,.88) 100%),
-    url('../images/church-exterior-1.jpg') center 35% / cover no-repeat;
+    url('../images/church-exterior-1-nopipe.jpg') center 35% / cover no-repeat;
 }
 
 
