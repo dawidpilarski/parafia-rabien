@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "Express",
-      "runtimeExecutable": "npm.cmd",
-      "runtimeArgs": ["start"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
       "port": 3000
     }
   ]
