@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Parafia Zwiastowania Pańskiego w Rąbieniu</title>
   <meta name="description" content="Parafia Zwiastowania Pańskiego w Rąbieniu – Msze Święte, historia, grupy parafialne, kontakt. Archidiecezja Łódzka, Dekanat Aleksandrowski." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://zwiastowanie-rabien.pl/" />
+  <meta name="theme-color" content="#152540" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pl_PL" />
+  <meta property="og:url" content="https://zwiastowanie-rabien.pl/" />
+  <meta property="og:site_name" content="Parafia Zwiastowania Pańskiego w Rąbieniu" />
+  <meta property="og:title" content="Parafia Zwiastowania Pańskiego w Rąbieniu" />
+  <meta property="og:description" content="Parafia Zwiastowania Pańskiego w Rąbieniu – Msze Święte, historia, grupy parafialne, kontakt. Archidiecezja Łódzka, Dekanat Aleksandrowski." />
+  <meta property="og:image" content="https://zwiastowanie-rabien.pl/images/church-exterior-1-nopipe.jpg" />
+  <meta property="og:image:alt" content="Kościół Zwiastowania Pańskiego w Rąbieniu" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -50,6 +63,61 @@
 
   <!-- Custom styles -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Church", "LocalBusiness"],
+    "name": "Parafia Zwiastowania Pańskiego w Rąbieniu",
+    "alternateName": "Parafia Rąbień",
+    "url": "https://zwiastowanie-rabien.pl",
+    "telephone": "+48427123709",
+    "image": "https://zwiastowanie-rabien.pl/images/church-exterior-1-nopipe.jpg",
+    "logo": "https://zwiastowanie-rabien.pl/favicon.svg",
+    "description": "Parafia Zwiastowania Pańskiego w Rąbieniu – wspólnota ponad 2 500 wiernych w Archidiecezji Łódzkiej, Dekanat Aleksandrowski.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Ks. Kan. A. Mikołajczyka 2",
+      "addressLocality": "Rąbień AB",
+      "postalCode": "95-071",
+      "addressRegion": "Łódź",
+      "addressCountry": "PL"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 51.7894,
+      "longitude": 19.2643
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        "opens": "18:00",
+        "closes": "19:00",
+        "description": "Msza Święta"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "08:30",
+        "closes": "19:00",
+        "description": "Msze Święte: 8:30, 11:00, 18:00"
+      }
+    ],
+    "denomination": "Kościół Rzymskokatolicki",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Archidiecezja Łódzka"
+    },
+    "employee": {
+      "@type": "Person",
+      "name": "ks. Jarosław Jurga",
+      "jobTitle": "Proboszcz"
+    },
+    "areaServed": ["Rąbień AB", "Antoniew", "Grunwald", "Izabelin", "Łódź"]
+  }
+  </script>
 </head>
 
 <!-- Alpine root -->

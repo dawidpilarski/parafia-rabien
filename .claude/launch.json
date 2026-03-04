@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "Static Site (Python)",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "."],
-      "port": 8080
+      "name": "Express",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["start"],
+      "port": 3000
     }
   ]
 }
