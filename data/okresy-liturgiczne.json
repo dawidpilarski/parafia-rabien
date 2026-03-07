@@ -1,0 +1,38 @@
+{
+  "adwent": {
+    "enabled": false,
+    "tytul": "Adwent",
+    "ikona": "fa-star",
+    "opis": "Czas radosnego oczekiwania na przyjście Pana. Zapraszamy na Roraty oraz Rekolekcje Adwentowe. Szczegółowe informacje dostępne w kancelarii parafialnej i na tablicy ogłoszeń."
+  },
+  "bozeNarodzenie": {
+    "enabled": false,
+    "tytul": "Okres Bożego Narodzenia",
+    "ikona": "fa-baby",
+    "opis": "Radujmy się z narodzenia Pana Jezusa! Zapraszamy na Pasterkę oraz liturgię okresu Bożego Narodzenia."
+  },
+  "wielkiPost": {
+    "enabled": true,
+    "tytul": "Wielki Post",
+    "ikona": "fa-leaf",
+    "opis": "W czasie Wielkiego Postu zapraszamy na Gorzkie Żale, Drogę Krzyżową oraz rekolekcje. Szczegółowe informacje dostępne w kancelarii parafialnej i na tablicy ogłoszeń."
+  },
+  "triduum": {
+    "enabled": false,
+    "tytul": "Triduum Paschalne",
+    "ikona": "fa-cross",
+    "opis": "Przeżywamy najważniejsze dni roku liturgicznego: Wielki Czwartek, Wielki Piątek i Wigilię Paschalną. Zapraszamy na wszystkie liturgie Triduum."
+  },
+  "wielkanoc": {
+    "enabled": false,
+    "tytul": "Okres Wielkanocny",
+    "ikona": "fa-sun",
+    "opis": "Chrystus zmartwychwstał! Przeżywamy radość paschalną. Zapraszamy na liturgie okresu wielkanocnego."
+  },
+  "zwykly": {
+    "enabled": false,
+    "tytul": "Okres Zwykły",
+    "ikona": "fa-church",
+    "opis": "Zapraszamy do udziału w codziennej Eucharystii i nabożeństwach w ciągu roku liturgicznego."
+  }
+}
