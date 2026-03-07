@@ -142,10 +142,13 @@ app.get('/api/czytania', async (req, res) => {
     }
 
     const data = await fetchCzytania();
+    if (!data.readings || data.readings.length === 0) {
+      throw new Error('No readings parsed from source page');
+    }
     cache = { data, date: today };
     res.json(data);
   } catch (err) {
-    console.error('Scraping error:', err);
+    console.error('Scraping error: ', err);
     res.status(500).json({ error: 'Nie udało się pobrać czytań.' });
   }
 });
