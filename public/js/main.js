@@ -2,12 +2,11 @@
 const components = [
   'header',
   'hero',
-  'mass-schedule',
   'announcements',
   'readings',
+  'mass-schedule',
   'about',
   'history',
-
   'groups',
   'contact',
   'footer',

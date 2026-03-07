@@ -75,11 +75,11 @@
     "telephone": "+48427123709",
     "image": "https://zwiastowanie-rabien.pl/images/church-exterior-1-nopipe.jpg",
     "logo": "https://zwiastowanie-rabien.pl/favicon.svg",
-    "description": "Parafia Zwiastowania Pańskiego w Rąbieniu – wspólnota ponad 2 500 wiernych w Archidiecezji Łódzkiej, Dekanat Aleksandrowski.",
+    "description": "Parafia Zwiastowania Pańskiego w Rąbieniu – wspólnota w Archidiecezji Łódzkiej, Dekanat Aleksandrowski.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "ul. Ks. Kan. A. Mikołajczyka 2",
-      "addressLocality": "Rąbień AB",
+      "addressLocality": "Rąbień",
       "postalCode": "95-071",
       "addressRegion": "Łódź",
       "addressCountry": "PL"
@@ -115,7 +115,8 @@
       "name": "ks. Jarosław Jurga",
       "jobTitle": "Proboszcz"
     },
-    "areaServed": ["Rąbień AB", "Antoniew", "Grunwald", "Izabelin", "Łódź"]
+    "sameAs": "https://www.facebook.com/profile.php?id=100086143224757",
+    "areaServed": ["Rąbień", "Antoniew", "Grunwald", "Izabelin", "Łódź"]
   }
   </script>
 </head>
@@ -138,6 +139,17 @@
   <div id="component-groups"></div>
   <div id="component-contact"></div>
   <div id="component-footer"></div>
+
+  <!-- Back to top -->
+  <button
+    @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    x-show="scrolled"
+    x-transition.opacity
+    class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-navy/80 hover:bg-navy text-gold shadow-lg flex items-center justify-center transition-all hover:-translate-y-1 hover:shadow-xl backdrop-blur-sm"
+    aria-label="Powrót na górę"
+  >
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
   <!-- Component loader & initialization -->
   <script src="js/main.js"></script>

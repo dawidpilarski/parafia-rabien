@@ -1,4 +1,7 @@
-<section id="msze" class="py-28 bg-sand">
+<section id="msze" class="py-28 bg-sand"
+  x-data="{ okresy: null, aktywny: null }"
+  x-init="fetch('/api/okresy-liturgiczne').then(r => r.json()).then(d => { okresy = d; aktywny = Object.values(d).find(o => o.enabled) || null; })"
+>
   <div class="max-w-6xl mx-auto px-6">
 
     <!-- Heading -->
@@ -65,19 +68,19 @@
       </div>
     </div>
 
-    <!-- Lenten notice -->
-    <div class="mt-10 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="300">
-      <div class="flex items-start gap-4 bg-navy/5 border border-gold/20 rounded-2xl p-6">
-        <div class="icon-circle bg-gold/10 border border-gold/20 shrink-0">
-          <i class="fas fa-leaf text-gold text-sm"></i>
-        </div>
-        <div>
-          <h4 class="font-serif font-semibold text-navy mb-1">Wielki Post</h4>
-          <p class="text-gray-500 text-sm leading-relaxed">
-            W czasie Wielkiego Postu zapraszamy na <strong>Gorzkie Żale</strong>, <strong>Drogę Krzyżową</strong> oraz rekolekcje. Szczegółowe informacje dostępne w kancelarii parafialnej i na tablicy ogłoszeń.
-          </p>
+    <!-- Liturgical season notice (dynamic) -->
+    <template x-if="aktywny">
+      <div class="mt-10 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="300">
+        <div class="flex items-start gap-4 bg-navy/5 border border-gold/20 rounded-2xl p-6">
+          <div class="icon-circle bg-gold/10 border border-gold/20 shrink-0">
+            <i class="fas text-gold text-sm" :class="aktywny.ikona"></i>
+          </div>
+          <div>
+            <h4 class="font-serif font-semibold text-navy mb-1" x-text="aktywny.tytul"></h4>
+            <p class="text-gray-500 text-sm leading-relaxed" x-text="aktywny.opis"></p>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </section>
