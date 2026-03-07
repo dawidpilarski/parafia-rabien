@@ -64,9 +64,10 @@ async function fetchCzytania() {
         // First paragraph has siglum details + refrain; extract just the refrain
         // Format: "Ps 95 (94), 1-2. 6-7c. 7d-9 (R.: por. 7d-8a)Słysząc głos..."
         let refrain = paragraphs[0] || '';
-        const refrainMatch = refrain.match(/\(R\.:.*?\)(.+)$/s);
-        if (refrainMatch) {
-          refrain = refrainMatch[1].trim();
+        const rIdx = refrain.indexOf('(R.:');
+        if (rIdx !== -1) {
+          const closeParen = refrain.indexOf(')', rIdx + 4);
+          refrain = closeParen !== -1 ? refrain.slice(closeParen + 1).trim() : refrain.slice(rIdx + 4).trim();
         } else if (refrain.startsWith(reference)) {
           refrain = refrain.slice(reference.length).trim();
         }
