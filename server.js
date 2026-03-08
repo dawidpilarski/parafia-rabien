@@ -13,6 +13,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let cache = { data: null, date: null };
 
+async function notifyError(message){
+  const url = "https://fanatic-muskrat.pikapod.net/webhook-test/801b977a-8085-407b-a063-30f45d6c8afc"
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain'
+    },
+    body: message
+  })
+
+  if (!response.ok){
+    console.log(`Couldn't notify about an error, because request failed. status: ${response.status}, body: ${response.body}`)
+  }
+}
+
 async function fetchCzytania() {
   try {
     const res = await fetch('https://opoka.org.pl/liturgia/');
@@ -121,6 +136,7 @@ app.get('/api/okresy-liturgiczne', (_req, res) => {
     const raw = fs.readFileSync(path.join(__dirname, 'data', 'okresy-liturgiczne.json'), 'utf8');
     res.json(JSON.parse(raw));
   } catch (e) {
+    notifyError(`Nie udało się załadować okresów liturgicznych. ${e}`)
     res.status(500).json({ error: 'Nie udało się załadować okresów liturgicznych.' });
   }
 });
@@ -130,6 +146,7 @@ app.get('/api/ogloszenia', (_req, res) => {
     const raw = fs.readFileSync(path.join(__dirname, 'data', 'ogloszenia.json'), 'utf8');
     res.json(JSON.parse(raw));
   } catch (e) {
+    notifyError(`Nie udało się załadować ogłoszeń. ${e}`)
     res.status(500).json({ error: 'Nie udało się załadować ogłoszeń.' });
   }
 });
@@ -149,10 +166,18 @@ app.get('/api/czytania', async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error('Scraping error: ', err);
+    notifyError(`Nie udało się pobrać czytań. ${err}`)
     res.status(500).json({ error: 'Nie udało się pobrać czytań.' });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = {
+  notifyError,
+  fetchCzytania
+}
+
+if (require.main == module){
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
