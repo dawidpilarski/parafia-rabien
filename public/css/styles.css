@@ -203,6 +203,11 @@ body { overflow-x: hidden; }
   transform: translateY(-2px);
 }
 
+@media (max-width: 639px) {
+  .hero-btn-primary,
+  .hero-btn-ghost { padding: .75rem 1.75rem; font-size: 1rem; }
+}
+
 /* ─── Info cards ──────────────────────────────── */
 .hero-info-card {
   text-align: center;
