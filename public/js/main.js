@@ -3,6 +3,7 @@ const components = [
   'header',
   'hero',
   'announcements',
+  'facebook-news',
   'readings',
   'mass-schedule',
   'about',
@@ -28,4 +29,13 @@ Promise.all(
     once: true,
     offset: 60,
   });
+
+  // Load Facebook SDK after components are in the DOM
+  window.fbAsyncInit = function () {
+    FB.init({ xfbml: true, version: 'v21.0' });
+  };
+  const fbScript = document.createElement('script');
+  fbScript.async = true;
+  fbScript.src = 'https://connect.facebook.net/pl_PL/sdk.js';
+  document.body.appendChild(fbScript);
 });
