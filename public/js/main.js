@@ -11,6 +11,7 @@ const components = [
   'groups',
   'contact',
   'footer',
+  'cookie-banner',
 ];
 
 Promise.all(
