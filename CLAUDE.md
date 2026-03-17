@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-Website for a Polish Catholic parish (Parafia Zwiastowania Pańskiego w Rąbieniu). Node.js/Express backend serving static files from `public/` with a scraping API for daily liturgical readings.
+Website for a Polish Catholic parish (Parafia Zwiastowania Pańskiego w Rąbieniu). Node.js/Express backend serving static files from `public/` with API endpoints for dynamic data.
 
 ## Running Locally
 
@@ -13,52 +13,78 @@ npm install
 npm start        # starts Express on port 3000
 ```
 
+No tests, no build step, no linter configured.
+
 ## Architecture
 
-**Backend:** `server.js` — Express server serving `public/` as static files. Exposes `GET /api/czytania` which scrapes brewiarz.pl for daily readings (ISO-8859-2 encoded, cached 1 hour).
+**Backend:** `server.js` — Express server serving `public/` as static files. All API routes are defined in this single file alongside their data-fetching functions.
 
-**Frontend:** Component-based loading without a framework. `public/index.html` is a shell with placeholder `<div id="component-{name}">` elements. `public/js/main.js` fetches each HTML file from `components/` and injects it, then initializes AOS (scroll animations).
+**Frontend:** Component-based loading without a framework. `public/index.html` is a shell with `<div id="component-{name}">` placeholders. `public/js/main.js` fetches all components in parallel from `components/`, injects them, then initializes AOS. Alpine.js handles interactivity within components after injection.
 
-Component load order matters — it matches page section order:
-header → hero → announcements → readings → mass-schedule → about → history → features → groups → contact → footer
+Component load order (matches page section order):
+header → hero → announcements → facebook-news → readings → mass-schedule → about → history → groups → contact → footer → cookie-banner
 
-**Key frameworks (all via CDN):**
-- **Tailwind CSS 3** — utility classes, custom theme defined inline in `index.html`
-- **Alpine.js 3** — interactivity (mobile menu toggle, announcements on/off switches)
-- **AOS** — scroll-triggered animations via `data-aos` attributes
+**Key CDN frameworks:**
+- **Tailwind CSS 3** — custom theme (colors, fonts) defined in the `<script>` block in `index.html`
+- **Alpine.js 3** — interactivity; `x-data` scopes are per-component
+- **AOS** — `data-aos="fade-up"` with staggered `data-aos-delay` on cards
 - **Font Awesome 6** — icons
+
+## API Endpoints
+
+| Endpoint | Source | Cache |
+|----------|--------|-------|
+| `GET /api/czytania` | Scrapes opoka.org.pl (cheerio) | Daily (resets at midnight) |
+| `GET /api/ogloszenia` | `data/ogloszenia.json` | None |
+| `GET /api/okresy-liturgiczne` | `data/okresy-liturgiczne.json` | None |
+| `GET /api/facebook-feed` | Facebook Graph API v21.0 | 1-hour TTL |
+
+Errors are reported via `notifyError()` which POSTs to an external webhook.
+
+## Environment Variables
+
+| Variable | Default | Required for |
+|----------|---------|--------------|
+| `PORT` | `3000` | — |
+| `FACEBOOK_PAGE_TOKEN` | none | `/api/facebook-feed` (returns 503 if unset) |
+| `FACEBOOK_PAGE_ID` | `100086143224757` | `/api/facebook-feed` |
+
+### Getting a permanent Facebook page token
+
+```bash
+node scripts/exchange-facebook-token.js \
+  --app-id <app_id> \
+  --app-secret <app_secret> \
+  --short-lived-token <EAA...from Graph Explorer> \
+  [--page-id 100086143224757]
+```
+
+This outputs a page access token that never expires (short-lived → 60-day user token → permanent page token). Set the result as `FACEBOOK_PAGE_TOKEN`.
 
 ## Theme & Styling
 
-Custom Tailwind colors defined in `index.html` `<script>` block:
-- `navy` (#152540), `navy2` (#1e3255) — dark backgrounds, headings
-- `gold` (#c4a04b), `gold2` (#e0c47a) — accent color
-- `cream` (#faf8f4) — page background
-- `sand` (#f0ece3) — alternating section background
+Custom Tailwind colors in `index.html`:
+- `navy` (#152540), `navy2` (#1e3255) — backgrounds, headings
+- `gold` (#c4a04b), `gold2` (#e0c47a) — accent
+- `cream` (#faf8f4) — page background; `sand` (#f0ece3) — alternating sections
 
-Fonts: Playfair Display (serif headings) + Inter (sans body text).
+Fonts: Playfair Display (serif headings) + Inter (sans body).
 
-Custom animations and component styles live in `css/styles.css`. Sections alternate between `bg-white`, `bg-sand`, and `bg-cream` backgrounds. Dark cards use the `grad-card` class (navy gradient).
+`css/styles.css` holds custom utility classes. Key reusable classes:
+- `grad-card` — navy gradient dark card
+- `lift` — hover translateY + shadow on interactive elements
+- `section-label` — small pill label above section headings (use `justify-center` for centered sections)
+- `divider` — gold accent line under headings
 
-## Announcements System
+Light cards: `bg-white rounded-2xl shadow-xl border border-gray-100`.
 
-`public/components/announcements.html` has an Alpine.js `x-data` config block at the top:
+## Announcements
 
-```js
-news: {
-  koleda:   true,   // toggle each item on/off
-  koncert:  false,
-  intencje: true,
-}
-```
-
-Each news item is wrapped in `<template x-if="news.xxx">`. The entire section auto-hides when all items are `false`. Intencje mszalne should always render last.
+`data/ogloszenia.json` is the source of truth. Served by `/api/ogloszenia` and consumed by `announcements.html` via Alpine.js `fetch`. Each top-level key (`koleda`, `koncert`, `intencje`) has an `enabled` boolean — the section shows a "dostępne już wkrótce" placeholder when all are false. `intencje` should always render last.
 
 ## Conventions
 
 - All content is in Polish
 - Section IDs are Polish: `#msze`, `#ogloszenia`, `#czytania`, `#o-parafii`, `#historia`, `#grupy`, `#kontakt`
-- Nav links in `header.html` must be updated in both desktop and mobile menu blocks
-- AOS attributes: use `data-aos="fade-up"` (or fade-left/right) with staggered `data-aos-delay`
-- Card patterns: dark cards = `grad-card` class, light cards = `bg-white` with `shadow-xl border border-gray-100`
-- Interactive elements get the `lift` class (hover translateY + shadow)
+- Nav links in `header.html` must be updated in both desktop and mobile blocks
+- Alpine.js data-fetching pattern: `x-data="{ loading:true, error:false, data:null, init(){ fetch(...).then(...).catch(...) } }"`

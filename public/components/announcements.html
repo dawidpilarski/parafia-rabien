@@ -134,4 +134,17 @@
       </div>
     </div>
   </template>
+
+  <template x-if="og && !og.koleda.enabled && !og.koncert.enabled && !og.intencje.enabled">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center" data-aos="fade-up">
+        <div class="section-label justify-center">
+          <i class="fas fa-bullhorn text-xs"></i> Aktualności
+        </div>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Ogłoszenia</h2>
+        <div class="divider"></div>
+        <p class="text-gray-400 max-w-md mx-auto mt-6 italic">Ogłoszenia dostępne już wkrótce.</p>
+      </div>
+    </div>
+  </template>
 </section>

@@ -20,7 +20,7 @@
     "zdjecie": "/images/koncert.jpg"
   },
   "intencje": {
-    "enabled": true,
+    "enabled": false,
     "tydzien": "2–8 marca 2026",
     "wpisy": [
       { "dzien": "Poniedziałek, 2 marca", "msze": [{ "godzina": "18:00", "intencja": "Za † Jana Kowalskiego w 5. rocznicę śmierci – od rodziny" }] },
