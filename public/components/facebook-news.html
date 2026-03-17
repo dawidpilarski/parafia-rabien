@@ -1,5 +1,21 @@
 <section id="facebook" class="py-28 bg-white">
-  <div class="max-w-4xl mx-auto px-6">
+  <div class="max-w-4xl mx-auto px-6"
+       x-data="{
+         loading: true,
+         error: false,
+         posts: [],
+         init() {
+           fetch('/api/facebook-feed')
+             .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+             .then(d => { this.posts = d.posts || []; this.loading = false; })
+             .catch(() => { this.error = true; this.loading = false; });
+         },
+         formatDate(iso) {
+           return new Date(iso).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+         }
+       }">
+
+    <!-- Section heading -->
     <div class="text-center mb-10" data-aos="fade-up">
       <div class="section-label justify-center mb-4">
         <i class="fab fa-facebook"></i>
@@ -10,22 +26,63 @@
       </h2>
       <div class="divider mx-auto"></div>
     </div>
-    <div class="flex justify-center" data-aos="fade-up" data-aos-delay="100">
-      <div class="fb-page"
-           data-href="https://www.facebook.com/profile.php?id=100086143224757"
-           data-tabs="timeline"
-           data-width="500"
-           data-height="700"
-           data-small-header="false"
-           data-adapt-container-width="true"
-           data-hide-cover="false"
-           data-show-facepile="false">
-        <blockquote cite="https://www.facebook.com/profile.php?id=100086143224757" class="fb-xfbml-parse-ignore">
-          <a href="https://www.facebook.com/profile.php?id=100086143224757">Parafia Zwiastowania Pańskiego w Rąbieniu</a>
-        </blockquote>
+
+    <!-- Loading -->
+    <template x-if="loading">
+      <div class="flex justify-center py-12">
+        <i class="fas fa-spinner fa-spin text-3xl text-gold"></i>
       </div>
-    </div>
-    <div class="text-center mt-6" data-aos="fade-up" data-aos-delay="200">
+    </template>
+
+    <!-- Error -->
+    <template x-if="error">
+      <div class="text-center py-12 text-gray-500">
+        <i class="fas fa-exclamation-circle text-2xl mb-3 text-gold/60 block"></i>
+        <p>Nie udało się pobrać aktualności. Odwiedź nas bezpośrednio na
+          <a href="https://www.facebook.com/profile.php?id=100086143224757"
+             target="_blank" rel="noopener noreferrer"
+             class="text-gold hover:text-gold2 underline">Facebooku</a>.
+        </p>
+      </div>
+    </template>
+
+    <!-- Posts -->
+    <template x-if="!loading && !error">
+      <div class="space-y-6">
+        <template x-for="(post, index) in posts" :key="post.url">
+          <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden lift"
+               data-aos="fade-up" :data-aos-delay="index * 100">
+
+            <!-- Image -->
+            <template x-if="post.image">
+              <img :src="post.image" :alt="post.message.slice(0, 60)"
+                   class="w-full object-cover max-h-72">
+            </template>
+
+            <!-- Body -->
+            <div class="px-6 py-5">
+              <p class="text-xs font-semibold tracking-wider uppercase text-gold mb-2"
+                 x-text="formatDate(post.date)"></p>
+              <p class="text-gray-700 leading-relaxed whitespace-pre-line text-[0.95rem] line-clamp-5"
+                 x-text="post.message"></p>
+              <a :href="post.url" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-2 mt-4 text-sm text-navy/60 hover:text-gold transition-colors">
+                <i class="fab fa-facebook text-base"></i>
+                Czytaj więcej na Facebooku
+              </a>
+            </div>
+          </div>
+        </template>
+
+        <!-- Empty state -->
+        <template x-if="posts.length === 0">
+          <p class="text-center text-gray-400 py-8">Brak wpisów do wyświetlenia.</p>
+        </template>
+      </div>
+    </template>
+
+    <!-- Facebook link -->
+    <div class="text-center mt-8" data-aos="fade-up">
       <a href="https://www.facebook.com/profile.php?id=100086143224757"
          target="_blank" rel="noopener noreferrer"
          class="inline-flex items-center gap-2 text-navy/60 hover:text-gold transition-colors text-sm">

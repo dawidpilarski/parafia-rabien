@@ -13,6 +13,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let cache = { data: null, date: null };
 
+// --- Facebook feed ---
+
+let fbCache = { data: null, timestamp: null };
+const FB_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+const FACEBOOK_PAGE_ID = process.env.FACEBOOK_PAGE_ID || '100086143224757';
+const FACEBOOK_PAGE_TOKEN = process.env.FACEBOOK_PAGE_TOKEN;
+
 async function notifyError(message){
   const url = "https://fanatic-muskrat.pikapod.net/webhook-test/801b977a-8085-407b-a063-30f45d6c8afc"
   const response = await fetch(url, {
@@ -131,6 +139,49 @@ async function fetchCzytania() {
   }
 }
 
+async function fetchFacebookFeed() {
+  const fields = 'message,story,full_picture,permalink_url,created_time';
+  const url = `https://graph.facebook.com/v21.0/${FACEBOOK_PAGE_ID}/posts` +
+    `?fields=${fields}&limit=10&access_token=${FACEBOOK_PAGE_TOKEN}`;
+
+  const res = await fetch(url);
+  const json = await res.json();
+
+  if (json.error) throw new Error(`Facebook API: ${json.error.message}`);
+
+  const posts = (json.data || [])
+    .filter(p => p.message || p.story)
+    .map(p => ({
+      message: p.message || p.story || '',
+      image: p.full_picture || null,
+      url: p.permalink_url || null,
+      date: p.created_time || null,
+    }));
+
+  return { posts };
+}
+
+app.get('/api/facebook-feed', async (_req, res) => {
+  if (!FACEBOOK_PAGE_TOKEN) {
+    return res.status(503).json({ error: 'Facebook feed nie jest skonfigurowany.' });
+  }
+
+  const now = Date.now();
+  if (fbCache.data && fbCache.timestamp && (now - fbCache.timestamp < FB_CACHE_TTL_MS)) {
+    return res.json(fbCache.data);
+  }
+
+  try {
+    const data = await fetchFacebookFeed();
+    fbCache = { data, timestamp: now };
+    res.json(data);
+  } catch (err) {
+    console.error('Facebook feed error:', err);
+    notifyError(`Nie udało się pobrać aktualności z Facebooka. ${err}`);
+    res.status(500).json({ error: 'Nie udało się pobrać aktualności z Facebooka.' });
+  }
+});
+
 app.get('/api/okresy-liturgiczne', (_req, res) => {
   try {
     const raw = fs.readFileSync(path.join(__dirname, 'data', 'okresy-liturgiczne.json'), 'utf8');
@@ -173,7 +224,8 @@ app.get('/api/czytania', async (req, res) => {
 
 module.exports = {
   notifyError,
-  fetchCzytania
+  fetchCzytania,
+  fetchFacebookFeed,
 }
 
 if (require.main == module){
