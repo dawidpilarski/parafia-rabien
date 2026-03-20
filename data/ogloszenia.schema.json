@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ogłoszenia",
+  "type": "object",
+  "properties": {
+    "koleda": {
+      "type": "object",
+      "description": "Wizyta duszpasterska (kolęda)",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "rok": { "type": "string", "description": "Rok kolędy, np. \"2026\"" },
+        "opis": { "type": "string" },
+        "godziny": { "type": "string", "description": "Godziny wizyty, np. \"16:00 – 19:00\"" },
+        "harmonogram": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dzien": { "type": "string", "description": "Np. \"Poniedziałek, 5 stycznia\"" },
+              "ulice": { "type": "string", "description": "Np. \"ul. Główna, ul. Polna\"" }
+            },
+            "required": ["dzien", "ulice"]
+          }
+        }
+      },
+      "required": ["enabled"]
+    },
+    "koncert": {
+      "type": "object",
+      "description": "Ogłoszenie o koncercie",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "tytul": { "type": "string" },
+        "opis": { "type": "string" },
+        "data": { "type": "string", "description": "Np. \"12 stycznia\"" },
+        "godzina": { "type": "string", "description": "Np. \"18:00\"" },
+        "wstep": { "type": "string", "description": "Np. \"Wolny\"" },
+        "zdjecie": { "type": "string", "description": "Ścieżka do zdjęcia, np. \"/images/koncert.jpg\"" }
+      },
+      "required": ["enabled"]
+    },
+    "ogolne": {
+      "type": "object",
+      "description": "Ogólne ogłoszenia parafialne (lista wpisów)",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "wpisy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tytul": { "type": "string" },
+              "tresc": { "type": "string" }
+            },
+            "required": ["tytul", "tresc"]
+          }
+        }
+      },
+      "required": ["enabled", "wpisy"]
+    },
+    "intencje": {
+      "type": "object",
+      "description": "Intencje mszalne na dany tydzień",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "tydzien": { "type": "string", "description": "Np. \"2–8 marca 2026\"" },
+        "wpisy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dzien": { "type": "string", "description": "Np. \"Poniedziałek, 2 marca\"" },
+              "msze": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "godzina": { "type": "string", "description": "Np. \"18:00\"" },
+                    "intencja": { "type": "string" }
+                  },
+                  "required": ["godzina", "intencja"]
+                }
+              }
+            },
+            "required": ["dzien", "msze"]
+          }
+        }
+      },
+      "required": ["enabled", "wpisy"]
+    }
+  },
+  "required": ["koleda", "koncert", "ogolne", "intencje"]
+}

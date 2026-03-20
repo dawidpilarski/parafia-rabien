@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Okresy liturgiczne",
+  "description": "Tylko jeden okres powinien mieć enabled: true w danym momencie",
+  "type": "object",
+  "properties": {
+    "adwent":         { "$ref": "#/$defs/okres" },
+    "bozeNarodzenie": { "$ref": "#/$defs/okres" },
+    "wielkiPost":     { "$ref": "#/$defs/okres" },
+    "triduum":        { "$ref": "#/$defs/okres" },
+    "wielkanoc":      { "$ref": "#/$defs/okres" },
+    "zwykly":         { "$ref": "#/$defs/okres" }
+  },
+  "required": ["adwent", "bozeNarodzenie", "wielkiPost", "triduum", "wielkanoc", "zwykly"],
+  "$defs": {
+    "okres": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "tytul": { "type": "string" },
+        "ikona": { "type": "string", "description": "Font Awesome class bez prefiksu 'fa-', np. \"fa-star\"" },
+        "opis": { "type": "string" }
+      },
+      "required": ["enabled", "tytul", "ikona", "opis"]
+    }
+  }
+}

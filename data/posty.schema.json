@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Posty",
+  "type": "object",
+  "properties": {
+    "enabled": { "type": "boolean" },
+    "wpisy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tytul": { "type": "string" },
+          "data": { "type": "string", "description": "Np. \"15 marca 2026\"" },
+          "tresc": { "type": "string" },
+          "zdjecie": { "type": "string", "description": "Ścieżka do zdjęcia lub pusty string" }
+        },
+        "required": ["tytul", "data", "tresc"]
+      }
+    }
+  },
+  "required": ["enabled", "wpisy"]
+}

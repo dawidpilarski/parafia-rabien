@@ -151,6 +151,16 @@ app.get('/api/ogloszenia', (_req, res) => {
   }
 });
 
+app.get('/api/posty', (_req, res) => {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'data', 'posty.json'), 'utf8');
+    res.json(JSON.parse(raw));
+  } catch (e) {
+    notifyError(`Nie udało się załadować postów. ${e}`)
+    res.status(500).json({ error: 'Nie udało się załadować postów.' });
+  }
+});
+
 app.get('/api/czytania', async (req, res) => {
   try {
     const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"

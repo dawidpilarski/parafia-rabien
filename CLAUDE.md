@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git
+
+Main branch: `master` (not `main` — use `master` as the base for all PRs and comparisons)
+
 ## What This Is
 
 Website for a Polish Catholic parish (Parafia Zwiastowania Pańskiego w Rąbieniu). Node.js/Express backend serving static files from `public/` with API endpoints for dynamic data.

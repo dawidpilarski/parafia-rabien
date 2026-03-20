@@ -1,150 +1,273 @@
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  OGŁOSZENIA – KONFIGURACJA                                  ║
+  ║  AKTUALNOŚCI – KONFIGURACJA                                 ║
   ║                                                              ║
-  ║  Edytuj plik: data/ogloszenia.json                          ║
+  ║  Ogłoszenia: data/ogloszenia.json (koleda, koncert, intencje)║
+  ║  Posty:      data/posty.json                                 ║
   ║                                                              ║
-  ║  Aby WŁĄCZYĆ/WYŁĄCZYĆ ogłoszenie: zmień "enabled": true/false ║
-  ║  Aby edytować treść: zmień odpowiednie pola tekstowe        ║
+  ║  Aby WŁĄCZYĆ/WYŁĄCZYĆ sekcję: zmień "enabled": true/false   ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 
-<section id="ogloszenia" class="py-28 bg-sand"
-  x-data="{ og: null }"
-  x-init="fetch('/api/ogloszenia').then(r => r.json()).then(d => og = d)"
+<section id="ogloszenia" class="py-20 md:py-28 bg-sand"
+  x-data="{
+    og: null,
+    posty: null,
+    open: null,
+    toggle(s) { this.open = this.open === s ? null : s; },
+    get anyEnabled() {
+      return (this.og && (this.og.koleda.enabled || this.og.koncert.enabled || this.og.ogolne.enabled || this.og.intencje.enabled))
+          || (this.posty && this.posty.enabled);
+    }
+  }"
+  x-init="
+    Promise.all([
+      fetch('/api/ogloszenia').then(r => r.json()).then(d => og = d),
+      fetch('/api/posty').then(r => r.json()).then(d => posty = d)
+    ])
+  "
 >
-  <template x-if="og && (og.koleda.enabled || og.koncert.enabled || og.intencje.enabled)">
-    <div class="max-w-6xl mx-auto px-6">
 
-      <!-- Heading -->
-      <div class="text-center mb-16" data-aos="fade-up">
-        <div class="section-label justify-center">
-          <i class="fas fa-bullhorn text-xs"></i> Aktualności
-        </div>
-        <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Ogłoszenia</h2>
-        <div class="divider"></div>
-        <p class="text-gray-500 max-w-md mx-auto">Najważniejsze informacje z życia parafii.</p>
+  <!-- Section heading -->
+  <div class="max-w-4xl mx-auto px-5 md:px-8">
+    <div class="text-center mb-14" data-aos="fade-up">
+      <div class="section-label justify-center">
+        <i class="fas fa-bullhorn text-xs"></i> Aktualności
       </div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Ogłoszenia</h2>
+      <div class="divider"></div>
+      <p class="text-gray-500 max-w-md mx-auto">Najważniejsze informacje z życia parafii.</p>
+    </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <!-- Accordion -->
+    <template x-if="og && posty">
+      <div>
+        <template x-if="anyEnabled">
+          <div class="space-y-4">
 
-        <!-- ═══════════════════════════════════════════
-             KOLĘDA
-             ═══════════════════════════════════════════ -->
-        <template x-if="og.koleda.enabled">
-          <div class="grad-card rounded-3xl p-8 text-white lift" :class="!og.koncert.enabled && 'lg:col-span-2'" data-aos="fade-up">
-            <div class="flex items-center gap-4 mb-6">
-              <div class="icon-circle bg-gold/15 border border-gold/25">
-                <i class="fas fa-star text-gold"></i>
-              </div>
-              <div>
-                <div class="text-gold/60 text-[.65rem] tracking-widest uppercase font-medium">Wizyta duszpasterska</div>
-                <div class="font-serif text-2xl font-semibold" x-text="'Kolęda ' + og.koleda.rok"></div>
-              </div>
-            </div>
+            <!-- ═══════════════════════════════════════════
+                 1. OGŁOSZENIA PARAFIALNE (kolęda + koncert)
+                 ═══════════════════════════════════════════ -->
+            <template x-if="og.koleda.enabled || og.koncert.enabled || og.ogolne.enabled">
+              <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden" data-aos="fade-up">
 
-            <p class="text-white/60 text-sm mb-6" x-text="og.koleda.opis"></p>
-
-            <div class="space-y-2">
-              <template x-for="wpis in og.koleda.harmonogram" :key="wpis.dzien">
-                <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-white/5 border border-white/8">
-                  <span class="text-white/80 text-sm font-medium" x-text="wpis.dzien"></span>
-                  <span class="text-gold text-sm" x-text="wpis.ulice"></span>
-                </div>
-              </template>
-            </div>
-
-            <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/8">
-              <p class="text-white/45 text-xs leading-relaxed">
-                <i class="fas fa-clock mr-1.5 text-gold/60"></i>
-                Kolęda odbywa się w godzinach <span x-text="og.koleda.godziny"></span>. Prosimy o wyrozumiałość w przypadku ewentualnych opóźnień.
-              </p>
-            </div>
-          </div>
-        </template>
-
-        <!-- ═══════════════════════════════════════════
-             KONCERT
-             ═══════════════════════════════════════════ -->
-        <template x-if="og.koncert.enabled">
-          <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-3xl p-8 border border-gold/15 lift" :class="!og.koleda.enabled && 'lg:col-span-2'" data-aos="fade-up">
-            <img :src="og.koncert.zdjecie" :alt="og.koncert.tytul" class="w-full h-48 object-cover rounded-2xl mb-6">
-            <div class="flex items-center gap-4 mb-6">
-              <div class="icon-circle bg-gold/10 border border-gold/20">
-                <i class="fas fa-music text-gold text-sm"></i>
-              </div>
-              <div>
-                <div class="text-navy/40 text-[.65rem] tracking-widest uppercase font-medium">Wydarzenie</div>
-                <div class="font-serif text-2xl font-semibold text-navy" x-text="og.koncert.tytul"></div>
-              </div>
-            </div>
-
-            <p class="text-gray-600 text-sm mb-6" x-text="og.koncert.opis"></p>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100">
-                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Data</div>
-                <div class="font-serif text-lg font-bold text-navy" x-text="og.koncert.data"></div>
-              </div>
-              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100">
-                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Godzina</div>
-                <div class="font-serif text-lg font-bold text-navy" x-text="og.koncert.godzina"></div>
-              </div>
-              <div class="text-center py-4 px-3 rounded-2xl bg-white border border-gray-100 col-span-2 sm:col-span-1">
-                <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Wstęp</div>
-                <div class="font-serif text-lg font-bold text-gold" x-text="og.koncert.wstep"></div>
-              </div>
-            </div>
-          </div>
-        </template>
-
-        <!-- ═══════════════════════════════════════════
-             INTENCJE MSZALNE
-             (zawsze ostatni w kolejności)
-             ═══════════════════════════════════════════ -->
-        <template x-if="og.intencje.enabled">
-          <div class="lg:col-span-2 bg-white rounded-3xl p-8 shadow-xl border border-gray-100 lift" data-aos="fade-up">
-            <div class="flex items-center gap-4 mb-6">
-              <div class="icon-circle bg-navy/8 border border-navy/12">
-                <i class="fas fa-book-open text-navy text-sm"></i>
-              </div>
-              <div>
-                <div class="text-navy/40 text-[.65rem] tracking-widest uppercase font-medium" x-text="'Tydzień ' + og.intencje.tydzien"></div>
-                <div class="font-serif text-2xl font-semibold text-navy">Intencje Mszalne</div>
-              </div>
-            </div>
-
-            <div class="space-y-1">
-              <template x-for="(wpis, i) in og.intencje.wpisy" :key="wpis.dzien">
-                <div :class="i < og.intencje.wpisy.length - 1 ? 'py-3.5 border-b border-gray-100' : 'py-3.5'">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-sm font-medium text-navy" x-text="wpis.dzien"></span>
-                    <span class="text-xs text-gray-400" x-text="wpis.msze.map(m => m.godzina).join(' · ')"></span>
+                <!-- Header -->
+                <button class="w-full flex items-center justify-between px-6 py-5 text-left group"
+                        @click="toggle('ogloszenia')">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                      <i class="fas fa-bullhorn text-gold text-sm"></i>
+                    </div>
+                    <div>
+                      <span class="text-xs font-semibold tracking-wider uppercase text-gold">Parafia</span>
+                      <p class="text-navy font-serif font-semibold mt-0.5">Ogłoszenia parafialne</p>
+                    </div>
                   </div>
-                  <template x-for="msza in wpis.msze" :key="msza.godzina">
-                    <p class="text-gray-500 text-sm"
-                       x-text="wpis.msze.length > 1 ? msza.godzina + ' – ' + msza.intencja : msza.intencja"></p>
-                  </template>
+                  <i class="fas fa-chevron-down text-gold/60 transition-transform duration-300"
+                     :class="open === 'ogloszenia' && 'rotate-180'"></i>
+                </button>
+
+                <!-- Body -->
+                <div x-show="open === 'ogloszenia'"
+                     x-collapse
+                     class="px-6 pb-6 border-t border-gray-100">
+
+                  <div class="mt-6 space-y-6">
+                    <!-- Kolęda -->
+                    <template x-if="og.koleda.enabled">
+                      <div class="grad-card rounded-2xl p-6 text-white">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div class="icon-circle bg-gold/15 border border-gold/25">
+                            <i class="fas fa-star text-gold"></i>
+                          </div>
+                          <div>
+                            <div class="text-gold/60 text-[.65rem] tracking-widest uppercase font-medium">Wizyta duszpasterska</div>
+                            <div class="font-serif text-xl font-semibold" x-text="'Kolęda ' + og.koleda.rok"></div>
+                          </div>
+                        </div>
+                        <p class="text-white/60 text-sm mb-4" x-text="og.koleda.opis"></p>
+                        <div class="space-y-2">
+                          <template x-for="wpis in og.koleda.harmonogram" :key="wpis.dzien">
+                            <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-white/5 border border-white/8">
+                              <span class="text-white/80 text-sm font-medium" x-text="wpis.dzien"></span>
+                              <span class="text-gold text-sm" x-text="wpis.ulice"></span>
+                            </div>
+                          </template>
+                        </div>
+                        <div class="mt-4 p-4 rounded-xl bg-white/5 border border-white/8">
+                          <p class="text-white/45 text-xs leading-relaxed">
+                            <i class="fas fa-clock mr-1.5 text-gold/60"></i>
+                            Kolęda odbywa się w godzinach <span x-text="og.koleda.godziny"></span>. Prosimy o wyrozumiałość w przypadku ewentualnych opóźnień.
+                          </p>
+                        </div>
+                      </div>
+                    </template>
+
+                    <!-- Ogólne -->
+                    <template x-if="og.ogolne.enabled">
+                      <div class="space-y-3">
+                        <template x-for="wpis in og.ogolne.wpisy" :key="wpis.tytul">
+                          <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                            <p class="font-serif font-semibold text-navy mb-1" x-text="wpis.tytul"></p>
+                            <p class="text-gray-500 text-sm leading-relaxed" x-text="wpis.tresc"></p>
+                          </div>
+                        </template>
+                      </div>
+                    </template>
+
+                    <!-- Fallback: ogłoszenia parafialne empty -->
+                    <template x-if="!og.koleda.enabled && !og.koncert.enabled && og.ogolne.enabled && og.ogolne.wpisy.length === 0">
+                      <p class="text-gray-400 text-center italic py-2">Ogłoszenia parafialne na najbliższą niedzielę będą dostępne wkrótce.</p>
+                    </template>
+
+                    <!-- Koncert -->
+                    <template x-if="og.koncert.enabled">
+                      <div class="bg-gradient-to-br from-navy/5 to-gold/5 rounded-2xl p-6 border border-gold/15">
+                        <img :src="og.koncert.zdjecie" :alt="og.koncert.tytul" class="w-full h-48 object-cover rounded-xl mb-4">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div class="icon-circle bg-gold/10 border border-gold/20">
+                            <i class="fas fa-music text-gold text-sm"></i>
+                          </div>
+                          <div>
+                            <div class="text-navy/40 text-[.65rem] tracking-widest uppercase font-medium">Wydarzenie</div>
+                            <div class="font-serif text-xl font-semibold text-navy" x-text="og.koncert.tytul"></div>
+                          </div>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4" x-text="og.koncert.opis"></p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          <div class="text-center py-3 px-3 rounded-xl bg-white border border-gray-100">
+                            <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Data</div>
+                            <div class="font-serif text-lg font-bold text-navy" x-text="og.koncert.data"></div>
+                          </div>
+                          <div class="text-center py-3 px-3 rounded-xl bg-white border border-gray-100">
+                            <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Godzina</div>
+                            <div class="font-serif text-lg font-bold text-navy" x-text="og.koncert.godzina"></div>
+                          </div>
+                          <div class="text-center py-3 px-3 rounded-xl bg-white border border-gray-100 col-span-2 sm:col-span-1">
+                            <div class="text-navy/40 text-[.6rem] tracking-widest uppercase mb-1">Wstęp</div>
+                            <div class="font-serif text-lg font-bold text-gold" x-text="og.koncert.wstep"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
                 </div>
-              </template>
-            </div>
+              </div>
+            </template>
+
+            <!-- ═══════════════════════════════════════════
+                 2. INTENCJE MSZALNE
+                 ═══════════════════════════════════════════ -->
+            <template x-if="og.intencje.enabled">
+              <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden" data-aos="fade-up">
+
+                <!-- Header -->
+                <button class="w-full flex items-center justify-between px-6 py-5 text-left group"
+                        @click="toggle('intencje')">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                      <i class="fas fa-hands-praying text-gold text-sm"></i>
+                    </div>
+                    <div>
+                      <span class="text-xs font-semibold tracking-wider uppercase text-gold" x-text="og.intencje.tydzien ? 'Tydzień ' + og.intencje.tydzien : 'Aktualne intencje'"></span>
+                      <p class="text-navy font-serif font-semibold mt-0.5">Intencje Mszalne</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-down text-gold/60 transition-transform duration-300"
+                     :class="open === 'intencje' && 'rotate-180'"></i>
+                </button>
+
+                <!-- Body -->
+                <div x-show="open === 'intencje'"
+                     x-collapse
+                     class="px-6 pb-6 border-t border-gray-100">
+
+                  <div class="mt-4 space-y-1">
+                    <template x-for="(wpis, i) in og.intencje.wpisy" :key="wpis.dzien">
+                      <div :class="i < og.intencje.wpisy.length - 1 ? 'py-3.5 border-b border-gray-100' : 'py-3.5'">
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-sm font-medium text-navy" x-text="wpis.dzien"></span>
+                          <span class="text-xs text-gray-400" x-text="wpis.msze.map(m => m.godzina).join(' · ')"></span>
+                        </div>
+                        <template x-for="msza in wpis.msze" :key="msza.godzina">
+                          <p class="text-gray-500 text-sm"
+                             x-text="wpis.msze.length > 1 ? msza.godzina + ' – ' + msza.intencja : msza.intencja"></p>
+                        </template>
+                      </div>
+                    </template>
+                    <template x-if="og.intencje.wpisy.length === 0">
+                      <p class="text-gray-400 text-center italic py-2">Intencje mszalne na najbliższy tydzień zostaną opublikowane wkrótce.</p>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- ═══════════════════════════════════════════
+                 3. POSTY
+                 ═══════════════════════════════════════════ -->
+            <template x-if="posty.enabled">
+              <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden" data-aos="fade-up">
+
+                <!-- Header -->
+                <button class="w-full flex items-center justify-between px-6 py-5 text-left group"
+                        @click="toggle('posty')">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                      <i class="fas fa-newspaper text-gold text-sm"></i>
+                    </div>
+                    <div>
+                      <span class="text-xs font-semibold tracking-wider uppercase text-gold">Aktualności</span>
+                      <p class="text-navy font-serif font-semibold mt-0.5">Posty</p>
+                    </div>
+                  </div>
+                  <i class="fas fa-chevron-down text-gold/60 transition-transform duration-300"
+                     :class="open === 'posty' && 'rotate-180'"></i>
+                </button>
+
+                <!-- Body -->
+                <div x-show="open === 'posty'"
+                     x-collapse
+                     class="px-6 pb-6 border-t border-gray-100">
+
+                  <div class="mt-4 space-y-4">
+                    <template x-if="posty.wpisy.length === 0">
+                      <p class="text-gray-400 text-center italic py-2">Nowe posty z życia parafii pojawią się wkrótce.</p>
+                    </template>
+                    <template x-for="post in posty.wpisy" :key="post.tytul">
+                      <div class="rounded-xl border border-gray-100 overflow-hidden">
+                        <template x-if="post.zdjecie">
+                          <img :src="post.zdjecie" :alt="post.tytul" class="w-full h-40 object-cover">
+                        </template>
+                        <div class="p-4">
+                          <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-serif font-semibold text-navy" x-text="post.tytul"></h3>
+                            <span class="text-xs text-gray-400 flex-shrink-0 ml-3" x-text="post.data"></span>
+                          </div>
+                          <p class="text-gray-500 text-sm leading-relaxed" x-text="post.tresc"></p>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </template>
+
           </div>
         </template>
 
+        <!-- Fallback: nothing enabled -->
+        <template x-if="!anyEnabled">
+          <p class="text-gray-400 max-w-md mx-auto text-center italic">Ogłoszenia dostępne już wkrótce.</p>
+        </template>
       </div>
-    </div>
-  </template>
+    </template>
 
-  <template x-if="og && !og.koleda.enabled && !og.koncert.enabled && !og.intencje.enabled">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center" data-aos="fade-up">
-        <div class="section-label justify-center">
-          <i class="fas fa-bullhorn text-xs"></i> Aktualności
-        </div>
-        <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Ogłoszenia</h2>
-        <div class="divider"></div>
-        <p class="text-gray-400 max-w-md mx-auto mt-6 italic">Ogłoszenia dostępne już wkrótce.</p>
+    <!-- Loading state -->
+    <template x-if="!og || !posty">
+      <div class="flex justify-center py-12">
+        <i class="fas fa-spinner fa-spin text-3xl text-gold"></i>
       </div>
-    </div>
-  </template>
+    </template>
+  </div>
 </section>
