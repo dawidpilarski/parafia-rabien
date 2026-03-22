@@ -1,7 +1,7 @@
 // Load all components into their placeholder elements
+// Hero is inlined in index.html for LCP performance — skip it here
 const components = [
   'header',
-  'hero',
   'announcements',
   'readings',
   'mass-schedule',

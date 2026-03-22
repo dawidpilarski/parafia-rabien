@@ -28,6 +28,9 @@
   <meta name="twitter:description" content="Parafia Zwiastowania Pańskiego w Rąbieniu. Msze Święte, ogłoszenia parafialne, czytania, grupy duszpasterskie." />
   <meta name="twitter:image" content="https://zwiastowanie-rabien.pl/images/church-exterior-1-nopipe.jpg" />
 
+  <!-- Preload hero background image (mobile) -->
+  <link rel="preload" as="image" type="image/webp" href="images/church-hero-480w.webp" />
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -40,12 +43,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Font Awesome (deferred – not needed for initial paint) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
 
-  <!-- AOS – Animate On Scroll -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <!-- AOS – Animate On Scroll (deferred) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" media="print" onload="this.media='all'" />
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
 
   <script>
     tailwind.config = {
@@ -139,7 +142,106 @@
 >
 
   <div id="component-header"></div>
-  <div id="component-hero"></div>
+  <div id="component-hero"><section class="hero-section relative min-h-[100svh] flex items-center overflow-hidden">
+
+  <!-- Floating golden particles -->
+  <div class="particles-field">
+    <span class="particle" style="--x:8%;--y:20%;--d:0s;--s:3px"></span>
+    <span class="particle" style="--x:15%;--y:65%;--d:1.2s;--s:2px"></span>
+    <span class="particle" style="--x:25%;--y:35%;--d:2.5s;--s:4px"></span>
+    <span class="particle" style="--x:35%;--y:80%;--d:0.7s;--s:2px"></span>
+    <span class="particle" style="--x:45%;--y:15%;--d:3.1s;--s:3px"></span>
+    <span class="particle" style="--x:55%;--y:70%;--d:1.8s;--s:2px"></span>
+    <span class="particle" style="--x:65%;--y:25%;--d:0.3s;--s:3px"></span>
+    <span class="particle" style="--x:72%;--y:55%;--d:2.9s;--s:4px"></span>
+    <span class="particle" style="--x:82%;--y:40%;--d:1.5s;--s:2px"></span>
+    <span class="particle" style="--x:88%;--y:75%;--d:3.6s;--s:3px"></span>
+    <span class="particle" style="--x:92%;--y:18%;--d:0.9s;--s:2px"></span>
+    <span class="particle" style="--x:50%;--y:50%;--d:2.1s;--s:5px"></span>
+  </div>
+
+  <!-- Large ornamental halo ring -->
+  <div class="hero-halo"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-6 py-10 md:py-36 text-center w-full">
+
+    <!-- Badge -->
+    <div class="hero-badge mb-4 md:mb-10" data-aos="fade-down" data-aos-delay="100">
+      <span class="hero-badge-dot"></span>
+      Archidiecezja Łódzka · Dekanat Aleksandrowski
+      <span class="hero-badge-dot"></span>
+    </div>
+
+    <!-- Marian monogram -->
+    <div class="hidden sm:block mb-4 md:mb-8" data-aos="zoom-in" data-aos-delay="180">
+      <div class="hero-monogram">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+          <path d="M10 50V22l22 16 22-16v28" stroke="url(#monoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="32,6 34,11.5 39.8,11.5 35,15 36.8,20.5 32,17 27.2,20.5 29,15 24.2,11.5 30,11.5" fill="url(#monoGrad)"/>
+          <defs><linearGradient id="monoGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#e0c47a"/><stop offset="1" stop-color="#c4a04b"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Heading -->
+    <h1 class="font-serif font-bold leading-[1.05] mb-3 md:mb-5" data-aos="fade-up" data-aos-delay="250">
+      <span class="block text-4xl sm:text-5xl md:text-6xl lg:text-8xl mb-2 sm:mb-3 hero-title-main">Parafia</span>
+      <span class="block text-2xl sm:text-4xl md:text-5xl lg:text-7xl hero-title-gold pb-2">Zwiastowania Pańskiego</span>
+    </h1>
+
+    <p class="font-serif italic text-base sm:text-lg md:text-2xl mb-2 md:mb-6 hero-subtitle" data-aos="fade-up" data-aos-delay="330">
+      w Rąbieniu
+    </p>
+
+    <!-- Ornamental divider -->
+    <div class="hero-ornament mb-2 md:mb-8" data-aos="fade-up" data-aos-delay="380">
+      <span class="hero-orn-line"></span>
+      <svg width="20" height="20" viewBox="0 0 20 20"><polygon points="10,0 12.5,7.5 20,7.5 14,12.5 16,20 10,15 4,20 6,12.5 0,7.5 7.5,7.5" fill="#c4a04b" opacity=".6"/></svg>
+      <span class="hero-orn-line"></span>
+    </div>
+
+    <blockquote class="hero-quote mb-2" data-aos="fade-up" data-aos-delay="420">
+      „Oto Ja służebnica Pańska, <br/>niech Mi się stanie według twego słowa!"
+    </blockquote>
+    <p class="hero-cite mb-4 md:mb-14" data-aos="fade-up" data-aos-delay="450">
+      — Łk 1,38
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="hidden sm:flex sm:flex-row gap-3 sm:gap-4 justify-center mb-6 md:mb-20" data-aos="fade-up" data-aos-delay="480">
+      <a href="#ogloszenia"
+         class="hero-btn-primary group">
+        <span class="hero-btn-shine"></span>
+        <i class="fas fa-bullhorn text-sm relative z-10"></i>
+        <span class="relative z-10">Ogłoszenia</span>
+      </a>
+      <a href="#czytania"
+         class="hero-btn-ghost">
+        <i class="fas fa-book-open text-sm"></i>
+        Czytania na dziś
+      </a>
+    </div>
+
+    <!-- Info cards -->
+    <div class="grid grid-cols-2 gap-5 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="530">
+      <div class="hero-info-card">
+        <div class="font-serif text-lg font-bold hero-title-gold"><i class="fas fa-map-marker-alt text-base mr-1"></i> Rąbień</div>
+        <div class="hero-info-sub">ul. Ks. Kan. A. Mikołajczyka 2</div>
+      </div>
+      <div class="hero-info-card">
+        <div class="font-serif text-3xl font-bold hero-title-gold">18:00</div>
+        <div class="hero-info-sub">Msza codzienna</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#ogloszenia" class="hero-scroll-cue">
+    <span class="hero-scroll-line"></span>
+    <i class="fas fa-chevron-down text-sm"></i>
+  </a>
+</section></div>
   <div id="component-announcements"></div>
   <div id="component-readings"></div>
   <div id="component-mass-schedule"></div>
